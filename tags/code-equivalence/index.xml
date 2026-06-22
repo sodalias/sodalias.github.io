@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Code Equivalence on soda</title>
+        <link>https://sodalias.github.io/tags/code-equivalence/</link>
+        <description>Recent content in Code Equivalence on soda</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>soda</copyright>
+        <lastBuildDate>Mon, 22 Jun 2026 14:19:59 +0800</lastBuildDate><atom:link href="https://sodalias.github.io/tags/code-equivalence/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>码等价问题笔记</title>
+        <link>https://sodalias.github.io/p/code-equivalence/</link>
+        <pubDate>Sun, 07 Jun 2026 11:52:50 +0800</pubDate>
+        
+        <guid>https://sodalias.github.io/p/code-equivalence/</guid>
+        <description>&lt;h2 id=&#34;码等价&#34;&gt;码等价
+&lt;/h2&gt;&lt;h3 id=&#34;置换&#34;&gt;置换
+&lt;/h3&gt;&lt;p&gt;一个置换 $\sigma$ 是集合 $\{ 0, 1, \ldots, n-1 \}$ 到自身的一一映射. 逆置换 $\sigma^{-1}$:
+&lt;/p&gt;
+$$
+\text{ 如果 } \sigma(j) = k, \text{ 则 } \sigma^{-1}(k) = j.
+$$&lt;p&gt;任意置换 $\sigma \in S_n$, 对向量 $\mathbf{v} = (v_0, v_1, \ldots, v_{n-1})$, 有
+&lt;/p&gt;
+$$\sigma(\mathbf{v}) = (v_{\sigma^{-1}(0)}, v_{\sigma^{-1}(1)}, \ldots, v_{\sigma^{-1}(n-1)}).
+$$&lt;p&gt; 为什么要用 $\sigma^{-1}$ 而不是直接定义成 $\sigma(\mathbf{v}) = (v_{\sigma(0)}, v_{\sigma(1)}, \ldots, v_{\sigma(n-1)})$ ? 这样做的目的是, 让群作用成为左作用，即满足 $(\sigma \tau) (\mathbf{v}) = \sigma(\tau(\mathbf{v}))$.&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-note&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📝&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;如果不加逆会怎样？&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;若 $\sigma(\mathbf{v}) = (v_{\sigma(0)}, v_{\sigma(1)}, \ldots, v_{\sigma(n-1)})$, 考虑连续作用
+&lt;/p&gt;
+$$\begin{aligned}
+    \sigma(\tau(v_{0}, \ldots, v_{n-1})) &amp; = \sigma(s_{0}, \dots, s_{n-1}), \text{ 其中 } s_i = v_{\tau(i)} \\
+    &amp; = (s_{\sigma(0)}, \ldots, s_{\sigma(n-1)}) \\
+    &amp; = (v_{\tau(\sigma(0))}, \ldots, v_{\tau(\sigma(n-1))})
+\end{aligned}
+$$&lt;p&gt;
+而直接作用 $(\sigma \tau) (v_{0}, \ldots, v_{n-1})$ 会得到 $(v_{(\sigma \tau)(0)}, \ldots, v_{(\sigma \tau)(n-1)})$. 所以这样定义不满足 $(\sigma \tau) (\mathbf{v}) = \sigma(\tau(\mathbf{v}))$.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;用逆保证左作用条件. 我们验证带逆的定义:
+&lt;/p&gt;
+$$
+\sigma(v_{0}, \ldots, v_{n-1}) = (v_{\sigma^{-1}(0)}, \ldots, v_{\sigma^{-1}(n-1)})
+$$&lt;p&gt;
+那么
+&lt;/p&gt;
+$$\begin{aligned}
+    \sigma(\tau(v_{0}, \ldots, v_{n-1})) &amp; = \sigma(s_{0}, \dots, s_{n-1}), \text{ 其中 } s_i = v_{\tau^{-1}(i)} \\
+    &amp; = (s_{\sigma^{-1}(0)}, \ldots, s_{\sigma^{-1}(n-1)}) \\
+    &amp; = (v_{\tau^{-1}(\sigma^{-1}(0))}, \ldots, v_{\tau^{-1}(\sigma^{-1}(n-1))}) \\
+    &amp; = (v_{(\sigma \tau)^{-1}(0)}, \ldots, v_{(\sigma \tau)^{-1}(n-1)}) \\
+    &amp; = (\sigma \tau) (v_{0}, \ldots, v_{n-1}).
+\end{aligned}
+$$&lt;blockquote class=&#34;alert alert-important&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📌&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;注意&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;一个容易混淆的点是, 如果采用不加逆的方式定义, 那么很容易错误的给出
+&lt;/p&gt;
+$$
+\sigma \tau (v_{0}, \ldots, v_{n-1}) = \sigma(v_{\tau(0)}, \dots, v_{\tau(n-1)}) = (v_{\sigma(\tau(0))}, \dots, v_{\sigma(\tau(n-1))}).
+$$&lt;p&gt;
+但这里把 $\sigma$ 作用在元组和 $\sigma$ 作用在分量下标上当成了一回事.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;举一个简单的例子，例如循环置换
+&lt;/p&gt;
+$$\sigma(v_0, v_1, \ldots, v_{n-1}) = (v_{n-1}, v_{0}, \ldots, v_{n-2}).$$&lt;p&gt;
+如果继续对 $(v_{n-1}, v_{0}, \ldots, v_{n-2})$ 做 $\tau$ 置换, 需要将 $(v_{n-1}, v_{0}, \ldots, v_{n-2})$ 的下标重新看成是 $0$ 到 $n-1$, 再对下标做置换. 而不是直接
+&lt;/p&gt;
+$$
+v_{\tau(n-1)}, v_{\tau(0)} \ldots, v_{\tau(n-2)}.
+$$&lt;p&gt;实际上, 这两种定义的区别在于&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;新元组的第 $i$ 个位置放原来的第 $\sigma(i)$ 个分量&lt;/strong&gt;, 即
+&lt;/p&gt;
+$$
+\sigma(v_{0}, \ldots, v_{n-1}) = (v_{\sigma(0)}, \ldots, v_{\sigma(n-1)})
+$$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;原第 $j$ 个分量移动到新元组的第 $\sigma(j)$ 个位置&lt;/strong&gt;, 即
+&lt;/p&gt;
+$$
+\sigma(v_{0}, \ldots, v_{n-1}) = (v_{\sigma^{-1}(0)}, \ldots, v_{\sigma^{-1}(n-1)})
+$$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;码等价群和半直积&#34;&gt;码等价群和半直积
+&lt;/h3&gt;&lt;h4 id=&#34;直积&#34;&gt;直积
+&lt;/h4&gt;&lt;p&gt;如果
+&lt;/p&gt;
+$$
+G = A \times B,
+$$&lt;p&gt;
+则&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$A \lhd G$,&lt;/li&gt;
+&lt;li&gt;$B \lhd G$,&lt;/li&gt;
+&lt;li&gt;$ab = ba$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;群的元素可以唯一写成
+&lt;/p&gt;
+$$
+g = ab, a \in A, b \in B.
+$$&lt;p&gt;
+或 $(a_1, b_1) (a_2, b_2) = (a_1 a_2, b_1 b_2)$.&lt;/p&gt;
+&lt;h4 id=&#34;半直积&#34;&gt;半直积
+&lt;/h4&gt;&lt;p&gt;半直积
+&lt;/p&gt;
+$$
+G = A \rtimes B
+$$&lt;p&gt;
+表示&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$A \lhd G$,&lt;/li&gt;
+&lt;li&gt;$B \le G$,&lt;/li&gt;
+&lt;li&gt;$A \cap B = \{ 1 \}$,&lt;/li&gt;
+&lt;li&gt;$AB = G$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但不要求 $ab = ba$. 实际上 $B$ 会作用在 $A$ 上:
+&lt;/p&gt;
+$$
+\varphi: B \to \mathrm{Aut}(A).
+$$&lt;p&gt;
+群乘法变成
+&lt;/p&gt;
+$$
+(a_1, b_1) (a_2, b_2) = (a_1 \varphi_{b_1}(a_2), b_1 b_2).
+$$&lt;h4 id=&#34;线性码等价的典型群&#34;&gt;线性码等价的典型群
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;单项式群 (monomial group)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;一个等价变换通常是
+&lt;/p&gt;
+$$
+x \mapsto P \cdot D \cdot x,
+$$&lt;p&gt;
+其中 $P$ 是置换矩阵, $D$ 是对角可逆矩阵. 我们拆成两个子群&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;置换群&lt;/strong&gt;: $S_n$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缩放群 (对角群)&lt;/strong&gt;: $(\mathbb F_{q}^{\star})^n$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在 $\mathbb F_q^n$ 里, 一个向量是
+&lt;/p&gt;
+$$
+x = (x_0, \ldots, x_{n-1}).
+$$&lt;p&gt;
+缩放变换指
+&lt;/p&gt;
+$$
+x_i \mapsto a_i x_i, \ a_i \in \mathbb F_q^{\star}.
+$$&lt;p&gt;
+一个缩放变换由 $n$ 个非零元素决定, 所以一个缩放操作等价于一个元组
+&lt;/p&gt;
+$$
+(a_0, \ldots, a_{n-1}),
+$$&lt;p&gt;
+其中每个 $a_i \in \mathbb F_q^{\star}$. 两个缩放操作
+&lt;/p&gt;
+$$
+(a_0, \ldots, a_{n-1}), (b_0, \ldots, b_{n-1}),
+$$&lt;p&gt;
+复合后是
+&lt;/p&gt;
+$$
+(a_0 b_0, \ldots, a_{n-1} b_{n-1}),
+$$&lt;p&gt;
+这是逐坐标乘法, 所以群就是 $(\mathbb F_{q}^{\star})^n$.&lt;/p&gt;
+&lt;p&gt;整个monomial group是
+&lt;/p&gt;
+$$
+(\mathbb F_{q}^{\star})^n \rtimes S_n.
+$$&lt;p&gt;
+这里&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$(\mathbb F_{q}^{\star})^n$ 正规,&lt;/li&gt;
+&lt;li&gt;$S_n$ 不一定正规,&lt;/li&gt;
+&lt;li&gt;$S_n$ 作用在 $(\mathbb F_{q}^{\star})^n$ 上.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$(\mathbb F_{q}^{\star})^n \rtimes S_n$ 中的乘法运算为
+&lt;/p&gt;
+$$
+(b, \sigma) (a, \pi) = (b \cdot (\sigma \cdot a), \sigma \pi).
+$$&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

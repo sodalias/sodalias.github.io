@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on soda</title>
+        <link>https://sodalias.github.io/post/</link>
+        <description>Recent content in Posts on soda</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>soda</copyright>
+        <lastBuildDate>Mon, 22 Jun 2026 14:19:59 +0800</lastBuildDate><atom:link href="https://sodalias.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>码等价问题笔记</title>
+        <link>https://sodalias.github.io/p/code-equivalence/</link>
+        <pubDate>Sun, 07 Jun 2026 11:52:50 +0800</pubDate>
+        
+        <guid>https://sodalias.github.io/p/code-equivalence/</guid>
+        <description>&lt;h2 id=&#34;码等价&#34;&gt;码等价
+&lt;/h2&gt;&lt;h3 id=&#34;置换&#34;&gt;置换
+&lt;/h3&gt;&lt;p&gt;一个置换 $\sigma$ 是集合 $\{ 0, 1, \ldots, n-1 \}$ 到自身的一一映射. 逆置换 $\sigma^{-1}$:
+&lt;/p&gt;
+$$
+\text{ 如果 } \sigma(j) = k, \text{ 则 } \sigma^{-1}(k) = j.
+$$&lt;p&gt;任意置换 $\sigma \in S_n$, 对向量 $\mathbf{v} = (v_0, v_1, \ldots, v_{n-1})$, 有
+&lt;/p&gt;
+$$\sigma(\mathbf{v}) = (v_{\sigma^{-1}(0)}, v_{\sigma^{-1}(1)}, \ldots, v_{\sigma^{-1}(n-1)}).
+$$&lt;p&gt; 为什么要用 $\sigma^{-1}$ 而不是直接定义成 $\sigma(\mathbf{v}) = (v_{\sigma(0)}, v_{\sigma(1)}, \ldots, v_{\sigma(n-1)})$ ? 这样做的目的是, 让群作用成为左作用，即满足 $(\sigma \tau) (\mathbf{v}) = \sigma(\tau(\mathbf{v}))$.&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-note&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📝&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;如果不加逆会怎样？&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;若 $\sigma(\mathbf{v}) = (v_{\sigma(0)}, v_{\sigma(1)}, \ldots, v_{\sigma(n-1)})$, 考虑连续作用
+&lt;/p&gt;
+$$\begin{aligned}
+    \sigma(\tau(v_{0}, \ldots, v_{n-1})) &amp; = \sigma(s_{0}, \dots, s_{n-1}), \text{ 其中 } s_i = v_{\tau(i)} \\
+    &amp; = (s_{\sigma(0)}, \ldots, s_{\sigma(n-1)}) \\
+    &amp; = (v_{\tau(\sigma(0))}, \ldots, v_{\tau(\sigma(n-1))})
+\end{aligned}
+$$&lt;p&gt;
+而直接作用 $(\sigma \tau) (v_{0}, \ldots, v_{n-1})$ 会得到 $(v_{(\sigma \tau)(0)}, \ldots, v_{(\sigma \tau)(n-1)})$. 所以这样定义不满足 $(\sigma \tau) (\mathbf{v}) = \sigma(\tau(\mathbf{v}))$.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;用逆保证左作用条件. 我们验证带逆的定义:
+&lt;/p&gt;
+$$
+\sigma(v_{0}, \ldots, v_{n-1}) = (v_{\sigma^{-1}(0)}, \ldots, v_{\sigma^{-1}(n-1)})
+$$&lt;p&gt;
+那么
+&lt;/p&gt;
+$$\begin{aligned}
+    \sigma(\tau(v_{0}, \ldots, v_{n-1})) &amp; = \sigma(s_{0}, \dots, s_{n-1}), \text{ 其中 } s_i = v_{\tau^{-1}(i)} \\
+    &amp; = (s_{\sigma^{-1}(0)}, \ldots, s_{\sigma^{-1}(n-1)}) \\
+    &amp; = (v_{\tau^{-1}(\sigma^{-1}(0))}, \ldots, v_{\tau^{-1}(\sigma^{-1}(n-1))}) \\
+    &amp; = (v_{(\sigma \tau)^{-1}(0)}, \ldots, v_{(\sigma \tau)^{-1}(n-1)}) \\
+    &amp; = (\sigma \tau) (v_{0}, \ldots, v_{n-1}).
+\end{aligned}
+$$&lt;blockquote class=&#34;alert alert-important&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📌&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;注意&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;一个容易混淆的点是, 如果采用不加逆的方式定义, 那么很容易错误的给出
+&lt;/p&gt;
+$$
+\sigma \tau (v_{0}, \ldots, v_{n-1}) = \sigma(v_{\tau(0)}, \dots, v_{\tau(n-1)}) = (v_{\sigma(\tau(0))}, \dots, v_{\sigma(\tau(n-1))}).
+$$&lt;p&gt;
+但这里把 $\sigma$ 作用在元组和 $\sigma$ 作用在分量下标上当成了一回事.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;举一个简单的例子，例如循环置换
+&lt;/p&gt;
+$$\sigma(v_0, v_1, \ldots, v_{n-1}) = (v_{n-1}, v_{0}, \ldots, v_{n-2}).$$&lt;p&gt;
+如果继续对 $(v_{n-1}, v_{0}, \ldots, v_{n-2})$ 做 $\tau$ 置换, 需要将 $(v_{n-1}, v_{0}, \ldots, v_{n-2})$ 的下标重新看成是 $0$ 到 $n-1$, 再对下标做置换. 而不是直接
+&lt;/p&gt;
+$$
+v_{\tau(n-1)}, v_{\tau(0)} \ldots, v_{\tau(n-2)}.
+$$&lt;p&gt;实际上, 这两种定义的区别在于&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;新元组的第 $i$ 个位置放原来的第 $\sigma(i)$ 个分量&lt;/strong&gt;, 即
+&lt;/p&gt;
+$$
+\sigma(v_{0}, \ldots, v_{n-1}) = (v_{\sigma(0)}, \ldots, v_{\sigma(n-1)})
+$$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;原第 $j$ 个分量移动到新元组的第 $\sigma(j)$ 个位置&lt;/strong&gt;, 即
+&lt;/p&gt;
+$$
+\sigma(v_{0}, \ldots, v_{n-1}) = (v_{\sigma^{-1}(0)}, \ldots, v_{\sigma^{-1}(n-1)})
+$$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;码等价群和半直积&#34;&gt;码等价群和半直积
+&lt;/h3&gt;&lt;h4 id=&#34;直积&#34;&gt;直积
+&lt;/h4&gt;&lt;p&gt;如果
+&lt;/p&gt;
+$$
+G = A \times B,
+$$&lt;p&gt;
+则&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$A \lhd G$,&lt;/li&gt;
+&lt;li&gt;$B \lhd G$,&lt;/li&gt;
+&lt;li&gt;$ab = ba$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;群的元素可以唯一写成
+&lt;/p&gt;
+$$
+g = ab, a \in A, b \in B.
+$$&lt;p&gt;
+或 $(a_1, b_1) (a_2, b_2) = (a_1 a_2, b_1 b_2)$.&lt;/p&gt;
+&lt;h4 id=&#34;半直积&#34;&gt;半直积
+&lt;/h4&gt;&lt;p&gt;半直积
+&lt;/p&gt;
+$$
+G = A \rtimes B
+$$&lt;p&gt;
+表示&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$A \lhd G$,&lt;/li&gt;
+&lt;li&gt;$B \le G$,&lt;/li&gt;
+&lt;li&gt;$A \cap B = \{ 1 \}$,&lt;/li&gt;
+&lt;li&gt;$AB = G$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但不要求 $ab = ba$. 实际上 $B$ 会作用在 $A$ 上:
+&lt;/p&gt;
+$$
+\varphi: B \to \mathrm{Aut}(A).
+$$&lt;p&gt;
+群乘法变成
+&lt;/p&gt;
+$$
+(a_1, b_1) (a_2, b_2) = (a_1 \varphi_{b_1}(a_2), b_1 b_2).
+$$&lt;h4 id=&#34;线性码等价的典型群&#34;&gt;线性码等价的典型群
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;单项式群 (monomial group)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;一个等价变换通常是
+&lt;/p&gt;
+$$
+x \mapsto P \cdot D \cdot x,
+$$&lt;p&gt;
+其中 $P$ 是置换矩阵, $D$ 是对角可逆矩阵. 我们拆成两个子群&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;置换群&lt;/strong&gt;: $S_n$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缩放群 (对角群)&lt;/strong&gt;: $(\mathbb F_{q}^{\star})^n$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在 $\mathbb F_q^n$ 里, 一个向量是
+&lt;/p&gt;
+$$
+x = (x_0, \ldots, x_{n-1}).
+$$&lt;p&gt;
+缩放变换指
+&lt;/p&gt;
+$$
+x_i \mapsto a_i x_i, \ a_i \in \mathbb F_q^{\star}.
+$$&lt;p&gt;
+一个缩放变换由 $n$ 个非零元素决定, 所以一个缩放操作等价于一个元组
+&lt;/p&gt;
+$$
+(a_0, \ldots, a_{n-1}),
+$$&lt;p&gt;
+其中每个 $a_i \in \mathbb F_q^{\star}$. 两个缩放操作
+&lt;/p&gt;
+$$
+(a_0, \ldots, a_{n-1}), (b_0, \ldots, b_{n-1}),
+$$&lt;p&gt;
+复合后是
+&lt;/p&gt;
+$$
+(a_0 b_0, \ldots, a_{n-1} b_{n-1}),
+$$&lt;p&gt;
+这是逐坐标乘法, 所以群就是 $(\mathbb F_{q}^{\star})^n$.&lt;/p&gt;
+&lt;p&gt;整个monomial group是
+&lt;/p&gt;
+$$
+(\mathbb F_{q}^{\star})^n \rtimes S_n.
+$$&lt;p&gt;
+这里&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$(\mathbb F_{q}^{\star})^n$ 正规,&lt;/li&gt;
+&lt;li&gt;$S_n$ 不一定正规,&lt;/li&gt;
+&lt;li&gt;$S_n$ 作用在 $(\mathbb F_{q}^{\star})^n$ 上.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$(\mathbb F_{q}^{\star})^n \rtimes S_n$ 中的乘法运算为
+&lt;/p&gt;
+$$
+(b, \sigma) (a, \pi) = (b \cdot (\sigma \cdot a), \sigma \pi).
+$$&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;</description>
+        </item>
+        <item>
+        <title>语义安全的公钥密钥体制的相关定义</title>
+        <link>https://sodalias.github.io/p/definitions-of-semantic-security/</link>
+        <pubDate>Fri, 03 Apr 2026 12:57:00 +0800</pubDate>
+        
+        <guid>https://sodalias.github.io/p/definitions-of-semantic-security/</guid>
+        <description>&lt;h2 id=&#34;公钥密码学的一些概念和定义&#34;&gt;公钥密码学的一些概念和定义&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;
+&lt;/h2&gt;&lt;p&gt;一个公钥加密方案是一个 PPT 算法元组 $(\mathrm{KeyGen}, \mathcal E, \mathcal D)$.&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;$(\mathrm{KeyGen}, \mathcal E, \mathcal D)$:&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ol&gt;
+&lt;li&gt;$\mathrm{KeyGen}(\mathcal K)$ 是密钥生成算法. 输入为安全参数 $\mathcal K$, 输出为一个对 $(\mathrm{pk}, \mathrm{sk})$, 其中 $\mathrm{pk}$ 是公钥, $\mathrm{sk}$ 是私钥. 表示为 $(\mathrm{pk}, \mathrm{sk}) \gets \mathrm{KeyGen}(\mathcal K)$.&lt;/li&gt;
+&lt;li&gt;$\mathcal E$ 是加密算法. 输入消息空间 $\mathcal M$ 的一个明文 $M$ 和公钥 $\mathrm{pk}$, 算法 $\mathcal E_{\mathrm{pk}}(M)$ 返回一个长为多项式 $p(\mathcal K)$的密文, 表示为 $\mathrm{CT} = \mathcal E_{\mathrm{pk}}(M)$.&lt;/li&gt;
+&lt;li&gt;$\mathcal D$ 是解密算法. 输入密文 $\mathrm{CT}$ 和密钥 $\mathrm{sk}$, $\mathcal D_{\mathrm{sk}}(\mathrm{CT})$ 返回一个消息 $M$ 或 $\bot$. 表示为 $M = \mathcal D_{\mathrm{sk}}(\mathrm{CT})$.&lt;/li&gt;
+&lt;/ol&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;公钥加密方案的正确性要求: 对于任意 $M \in \mathcal M$ 以及 $\mathrm{KeyGen}$ 的任意输出 $(\mathrm{pk}, \mathrm{sk})$, 都有 $D_{\mathrm{sk}}(\mathcal E_{\mathrm{pk}}(M)) = M$.&lt;/p&gt;
+&lt;p&gt;若定义公钥加密方案的安全性为: 如果敌手已知某个随机明文所对应的密文, 不能得出明文的完整信息, 这种定义是一个很弱的安全概念, 因为敌手虽然不能得出明文的完整信息, 但有可能得到明文的部分信息. 一个安全的加密方案应使敌手通过密文得不到明文的任何部分信息, 即使是 $1$ 比特的信息. 这就是加密方案语义安全的概念, 由 Goldwasser 和 Micali 提出&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, 奠定了现代密码学理论的数学基础.&lt;/p&gt;
+&lt;h3 id=&#34;选择明文攻击下的不可区分性&#34;&gt;选择明文攻击下的不可区分性
+&lt;/h3&gt;&lt;p&gt;公钥加密方案在选择明文攻击 (Chosen Plaintext Attack, CPA) 下的 IND 游戏 (称为 IND-CPA 游戏) 如下:&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CPA&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ol&gt;
+&lt;li&gt;初始化. 挑战者产生系统 $\Pi$, 敌手 (表示为 $\mathcal A$) 获得系统的公钥.&lt;/li&gt;
+&lt;li&gt;敌手产生明文消息, 得到系统加密后的密文 (可多项式有界次).&lt;/li&gt;
+&lt;li&gt;挑战. 敌手输出两个长度相同的消息 $M_0$ 和 $M_1$. 挑战者随机选择 $\beta \gets_R \{ 0, 1 \}$, 将 $M_{\beta}$ 加密, 并将密文 $C^*$ (称为目标密文) 给敌手.&lt;/li&gt;
+&lt;li&gt;猜测. 敌手输出 $\beta^{\prime}$, 如果 $\beta = \beta^{\prime}$, 则敌手攻击成功.&lt;/li&gt;
+&lt;/ol&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;敌手的优势可定义为参数 $\mathcal K$ 的函数:
+&lt;/p&gt;
+$$
+\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CPA}} (\mathcal K) = \Bigg \lvert  \mathrm{Pr}[\beta^{\prime} = \beta] - \frac{1}{2} \Bigg \rvert.
+$$&lt;p&gt;
+其中 $\mathcal K$ 是安全参数, 用来确定加密方案密钥的长度.&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CPA 安全&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;如果对任何多项式时间的敌手 $\mathcal A$, 存在一个可忽略的函数 $\epsilon(\mathcal K)$, 使得 $\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CPA}} (\mathcal K) \le \epsilon(\mathcal K)$, 那么称这个加密算法 $\Pi$ 是语义安全的, 或者称为在选择明文攻击下具有不可区分性, 简称为 IND-CPA 安全.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;h3 id=&#34;选择密文攻击下的不可区分性&#34;&gt;选择密文攻击下的不可区分性
+&lt;/h3&gt;&lt;p&gt;为了描述敌手的主动攻击, Naor 和 Yung 提出了 (非适应性) 选择密文攻击 (Chosen Ciphertext Attack, CCA) 的概念&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;, 其中敌手在获得目标密文以前, 可以访问解密谕言机 (Oracle). 公钥加密方案在选择密文攻击下的 IND 游戏 (称为 IND-CCA 游戏) 如下:&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CCA&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ol&gt;
+&lt;li&gt;初始化. 挑战者产生系统 $\Pi$, 敌手获得系统的公钥.&lt;/li&gt;
+&lt;li&gt;训练. 敌手向挑战者 (或解密谕言机) 做解密询问 (可多项式有界次), 即取密文 $\mathrm{CT}$ 给挑战者, 挑战者解密后, 将明文给敌手.&lt;/li&gt;
+&lt;li&gt;挑战. 敌手输出两个长度相同的消息 $M_0$ 和 $M_1$, 再从挑战者接收 $M_{\beta}$ 的密文, 其中随机值 $\beta \gets_R \{ 0, 1 \}$.&lt;/li&gt;
+&lt;li&gt;猜测. 敌手输出 $\beta^{\prime}$, 如果 $\beta = \beta^{\prime}$, 则敌手攻击成功.&lt;/li&gt;
+&lt;/ol&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;敌手的优势定义为安全参数 $\mathcal K$ 的函数:
+&lt;/p&gt;
+$$
+\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CCA}} (\mathcal K) = \Bigg \lvert  \mathrm{Pr}[\beta^{\prime} = \beta] - \frac{1}{2} \Bigg \rvert.
+$$&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CCA 安全&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;如果对任何多项式时间的敌手 $\mathcal A$, 存在一个可忽略的函数 $\epsilon(\mathcal K)$, 使得 $\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CCA}} (\mathcal K) \le \epsilon(\mathcal K)$, 那么称这个加密算法 $\Pi$ 在选择密文攻击下具有不可区分性, 或者称为 IND-CCA 安全.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;h3 id=&#34;适应性选择密文攻击下的不可区分性&#34;&gt;适应性选择密文攻击下的不可区分性
+&lt;/h3&gt;&lt;p&gt;Dolev, Dwork, Naor&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;以及 Sahai&lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#34;#fn:5&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;提出了适应性选择密文攻击 (Adaptive Chosen Ciphertext Attack, CCA2) 的概念, 其中敌手获得目标密文后, 可以向网络中注入消息 (可以和目标密文相关), 然后通过和网络中的用户交互, 获得与目标密文相应的明文的部分消息.&lt;/p&gt;
+&lt;p&gt;公钥加密方案在适应性选择密文攻击下的 IND 游戏 (称为 IND-CCA2 游戏) 如下:&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CCA2&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ol&gt;
+&lt;li&gt;初始化. 挑战者产生系统 $\Pi$, 敌手获得系统的公钥.&lt;/li&gt;
+&lt;li&gt;训练阶段1. 敌手向挑战者 (或解密谕言机) 做解密询问 (可多项式有界次), 即取密文 $\mathrm{CT}$ 给挑战者, 挑战者解密后, 将明文给敌手.&lt;/li&gt;
+&lt;li&gt;挑战. 敌手输出两个长度相同的消息 $M_0$ 和 $M_1$, 再从挑战者接收 $M_{\beta}$ 的密文 $C^{*}$, 其中随机值 $\beta \gets_R \{ 0, 1 \}$.&lt;/li&gt;
+&lt;li&gt;训练阶段2. 敌手继续向挑战者 (或解密谕言机) 做解密询问 (可多项式有界次), 即取密文 $\mathrm{CT}$ 给挑战者 ($\mathrm{CT} \ne C^{*}$), 挑战者解密后,将明文给敌手.&lt;/li&gt;
+&lt;li&gt;猜测. 敌手输出 $\beta^{\prime}$, 如果 $\beta = \beta^{\prime}$, 则敌手攻击成功.&lt;/li&gt;
+&lt;/ol&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;敌手的优势定义为安全参数 $\mathcal K$ 的函数:
+&lt;/p&gt;
+$$
+\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CCA2}} (\mathcal K) = \Bigg \lvert  \mathrm{Pr}[\beta^{\prime} = \beta] - \frac{1}{2} \Bigg \rvert.
+$$&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CCA2 安全&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;如果对任何多项式时间的敌手 $\mathcal A$, 存在一个可忽略的函数 $\epsilon(\mathcal K)$, 使得 $\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CCA2}} (\mathcal K) \le \epsilon(\mathcal K)$, 那么称这个加密算法 $\Pi$ 在适应性选择密文攻击下具有不可区分性, 或者称为 IND-CCA2 安全.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;h2 id=&#34;参考文献&#34;&gt;参考文献
+&lt;/h2&gt;&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;杨波, &lt;em&gt;密码学中的可证明安全性&lt;/em&gt;, 清华大学出版社, 2017.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
+&lt;p&gt;S. Goldwasser, S. Micali, &amp;ldquo;Probabilistic encryption,&amp;rdquo; &lt;em&gt;J. Comput. Syst. Sci.&lt;/em&gt;, vol. 28, no. 2, pp. 270-299, 1984.&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
+&lt;p&gt;M. Naor, M. Yung, &amp;ldquo;Public-key cryptosystems provably secure against chosen ciphertext attacks,&amp;rdquo; in &lt;em&gt;Proceedings of the ACM symposium on Theory of Computing&lt;/em&gt;, Baltimore, MD, USA, pp. 427-437, 1990.&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
+&lt;p&gt;D. Dolev, C. Dwork, M. Naor, &amp;ldquo;Non-malleable cryptography,&amp;rdquo; in &lt;em&gt;Proceedings of the ACM symposium on Theory of Computing&lt;/em&gt;, New Orleans, LA, USA, pp. 542-552, 1991.&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34;&gt;
+&lt;p&gt;A. Sahai, &amp;ldquo;Non-malleable non-interactive zero knowledge and adaptive chosen-ciphertext security,&amp;rdquo; &lt;em&gt;40th Annual Symposium on Foundations of Computer Science&lt;/em&gt;, New York, NY, USA, pp. 543-553, 1999.&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>Magma常用代码</title>
+        <link>https://sodalias.github.io/p/magma-notes/</link>
+        <pubDate>Mon, 30 Mar 2026 22:05:50 +0800</pubDate>
+        
+        <guid>https://sodalias.github.io/p/magma-notes/</guid>
+        <description>&lt;h2 id=&#34;有限域操作&#34;&gt;有限域操作
+&lt;/h2&gt;&lt;h3 id=&#34;获取有限域的乘法群&#34;&gt;获取有限域的乘法群&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;
+&lt;/h3&gt;&lt;p&gt;$\mathbb F_{q}^{*} = \mathbb F_{q} \setminus \{ 0 \}$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-ada&#34; data-lang=&#34;ada&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;定义函数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;FSTAR&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;phi&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MultiplicativeGroup&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;res&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;phi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kr&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;res&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;function&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;1.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;定义一个有限域&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;例如&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GF&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;^&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GF&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GF&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;2.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;获取乘法群&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;是&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;的乘法群&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;phi&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;是从&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;到&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;的映射&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;phi&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MultiplicativeGroup&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;3.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;查看乘法群的结构&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;MultiplicativeGroup(F):&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;4.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;获取乘法群的生成元&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;并映射回有限域中的实际元素&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;乘法群的生成元通常是&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;generator_in_F&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;phi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;G&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;generator in F&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;generator_in_F&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;//&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;5.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;验证它是否确实生成了所有的非零元素&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;all elements in MultiplicativeGroup(F):&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;G&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;phi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;end&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;for&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;FSTAR&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;references&#34;&gt;References
+&lt;/h2&gt;&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;MultiplicativeGroup(F) &lt;a class=&#34;link&#34; href=&#34;https://magma.maths.usyd.edu.au/magma/handbook/text/211#1832&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://magma.maths.usyd.edu.au/magma/handbook/text/211#1832&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>Classic McEliece</title>
+        <link>https://sodalias.github.io/p/classic-mceliece/</link>
+        <pubDate>Mon, 23 Mar 2026 16:57:58 +0800</pubDate>
+        
+        <guid>https://sodalias.github.io/p/classic-mceliece/</guid>
+        <description>&lt;h2 id=&#34;classic-mceliece-specification&#34;&gt;Classic McEliece Specification&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;安全稳定性&#34;&gt;安全稳定性
+&lt;/h3&gt;&lt;p&gt;当McEliece密码体制使用的码维数 $k$ 随着 $n \to \infty$,
+&lt;/p&gt;
+$$
+k = (0.8 + o(1))
+$$&lt;p&gt;
+时, 原始的Prange ISD (1962) 攻击的成本为
+&lt;/p&gt;
+$$
+(5+o(1))^t,
+$$&lt;p&gt;
+这里 $t=(0.2+o(1))n / \log_2 n$ 是密码体制中使用的错误个数, $o(1)$ 表示当 $n \to \infty$ 时收敛于 $0$. 经过&lt;a class=&#34;link&#34; href=&#34;https://classic.mceliece.org/papers.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;大量研究&lt;/a&gt;, 目前已知的最优非量子攻击的成本依然为 $(5+o(1))^t$.&lt;/p&gt;
+&lt;p&gt;攻击McEliece密码体制的瓶颈在于庞大的搜索过程, Grover算法可应用于此搜索, 所以量子攻击的成本为 $(5+o(1))^{t/2}$.&lt;/p&gt;
+&lt;p&gt;更一般地, 用 $R$ 替换 $0.8$, 等价于用 $1/(1-R)$ 替换 $5$. 对于任何给定的密钥长度, 当 $R$ 接近 $0.8$ 时安全性最高.&lt;/p&gt;
+&lt;h4 id=&#34;与格密码的安全性比较&#34;&gt;与格密码的安全性比较
+&lt;/h4&gt;&lt;p&gt;图1展示了针对&amp;quot;未破解&amp;quot;的基于格的密码系统 (红线) 的非量子攻击的渐近指数与 McEliece 密码体制 (蓝线) 相比的进展. 其中 $AttackCost_{Y}(K)$ 表示 $Y$ 年针对密钥长度为 $K$ 的最佳攻击的成本. 图1显示, 2010年基于格的密码的渐近安全级别比 2024 年的渐近安全级别高 $45$%. 2000年, 基于格的密码的渐近安全级别比2024年的渐近安全级别高出超指数级 (superexponentially).
+因此, 针对 McEliece 的攻击改进幅度不大, 但针对格的攻击改进幅度则大得多.&lt;/p&gt;
+&lt;figure class=&#34;center&#34;&gt;&lt;img src=&#34;https://sodalias.github.io/p/classic-mceliece/img/asymptotics2024.svg&#34;
+    alt=&#34;McEliece密码体制与格密码的安全性比较&#34; width=&#34;860&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;图1. McEliece密码体制与格密码的安全性比较&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;实现&#34;&gt;实现
+&lt;/h3&gt;&lt;h4 id=&#34;密钥尺寸&#34;&gt;密钥尺寸
+&lt;/h4&gt;&lt;p&gt;Classic McEliece算法的公钥很长, 但密文很短. 公钥可以重复用于多个密文, 因此Classic McEliece 算法的总成本可以低于其他后量子加密系统. 对于&amp;quot;静态密钥&amp;quot; (例如身份密钥), Classic McEliece 算法通常是成本最低的选择; 对于&amp;quot;临时密钥&amp;quot;, 其他算法通常成本更低. Classic McEliece 密钥密文尺寸的实例如表1所示.&lt;/p&gt;
+&lt;div class=&#34;table-wrapper&#34;&gt;
+  
+  
+    
+    &lt;p class=&#34;table-caption&#34; style=&#34;text-align: center;&#34;&gt;
+      表2. Classic McEliece 密钥密文尺寸
+    &lt;/p&gt;
+  
+  &lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;public key&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;private key&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;ciphertext&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;session key&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;261120&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;6492&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;96&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece348864&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;524160&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;13608&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;156&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece460896&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;1044992&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;13932&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;208&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece6688128&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;1047319&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;13948&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;194&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece6960119&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;1357824&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;14120&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;208&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece8192128&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+&lt;h4 id=&#34;时序攻击&#34;&gt;时序攻击
+&lt;/h4&gt;&lt;p&gt;为了抵御时序攻击 (Timing Attacks), Classic McEliece的官方实现从一开始就被设计成以恒定时间运行, 采用了 &amp;ldquo;&lt;a class=&#34;link&#34; href=&#34;https://tungchou.github.io/papers/mcbits.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;McBits&lt;/a&gt;&amp;rdquo; 和 &amp;ldquo;&lt;a class=&#34;link&#34; href=&#34;https://tungchou.github.io/papers/mcbits_revisited.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;McBits Revisited&lt;/a&gt;&amp;rdquo; 论文中介绍的技术.&lt;/p&gt;
+&lt;h3 id=&#34;cryptosystem-specification&#34;&gt;Cryptosystem specification
+&lt;/h3&gt;&lt;h4 id=&#34;简化行阶梯形式&#34;&gt;简化行阶梯形式
+&lt;/h4&gt;&lt;h4 id=&#34;系统形&#34;&gt;系统形
+&lt;/h4&gt;&lt;h4 id=&#34;semi-systematic-form&#34;&gt;Semi-systematic form
+&lt;/h4&gt;&lt;p&gt;参数 $\mu$, $\nu$ 满足 $\nu \ge \mu \ge 0$.&lt;br&gt;
+定义: 一个秩为 $r$ 的矩阵 $R$ 在 $(\mu, \nu)$-semi-systematic form 中, 如果:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;$R$ 有 $r$ 行 (没有零行);&lt;/li&gt;
+&lt;li&gt;对 $0 \le i &amp;lt; r - \mu$, 有 $c_i = i$;&lt;/li&gt;
+&lt;li&gt;对 $0 \le i &amp;lt; r$, 有 $c_i \le i-\mu+\nu$.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote class=&#34;alert alert-note&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📝&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;备注&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ul&gt;
+&lt;li&gt;前 $r - \mu$ 个前导 $1$ (pivot) 必须在列 $0,1,2,\ldots, r-\mu-1$ 上;&lt;/li&gt;
+&lt;li&gt;所有 pivot 列索引 $c_i$ 不能太大, 具体受 $\mu$, $\nu$ 限制.&lt;/li&gt;
+&lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;blockquote class=&#34;alert alert-note&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📝&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;特殊情况&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ul&gt;
+&lt;li&gt;如果 $\mu = 0$, 条件 2 中 $c_i$ 对所有 $i$ 成立, 所以就是系统形.&lt;/li&gt;
+&lt;li&gt;如果 $\mu = r$, 条件 2 没有约束, 条件 3: $c_i \le i - r + \nu$. 由于 $i \le r - 1$, 最宽松的情况是 $c_i \le \nu - 1$, 因此所有 pivot 都在前 $\nu$ 列内.&lt;/li&gt;
+&lt;li&gt;一般情况下, 前 $r-\mu$ 个 pivot 严格对准列索引 $0,1,\ldots$, 剩下的 $\mu$ 个 pivot 可以向右偏移, 但总偏移量受 $\nu$ 控制.&lt;/li&gt;
+&lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;举例: 设 $n=10$, $r=5$, 取 $\mu = 2$, $\nu=4$. 条件:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$r-\mu=3$, 所以前 $3$ 个 pivot 必须在列 $0,1,2$;&lt;/li&gt;
+&lt;li&gt;所有 pivot 列 $c_i$ 满足 $c_i \le i-2+4 = i+2$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;table-wrapper&#34;&gt;
+  
+  
+    
+    &lt;p class=&#34;table-caption&#34; style=&#34;text-align: center;&#34;&gt;
+      表3. Semi-Systematic Form 例子
+    &lt;/p&gt;
+  
+  &lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$i$&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$i+2$&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;允许的最大 pivot 列&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$0$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$2$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$c_0 = 0$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$1$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$3$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$c_1 = 1$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$2$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$4$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$c_2 = 2$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$3$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$5$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$3 \le c_3 \le 5$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$4$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$6$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$4 \le c_4 \le 6$&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+&lt;p&gt;一个可能的矩阵
+&lt;/p&gt;
+$$
+R = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * \\
+0 &amp; 1 &amp; 0 &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * \\
+0 &amp; 0 &amp; 1 &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; * &amp; * &amp; * &amp; * &amp; * \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; * &amp; * &amp; * 
+\end{pmatrix}
+$$&lt;h2 id=&#34;guide-for-security-reviewers&#34;&gt;Guide for Security Reviewers
+&lt;/h2&gt;&lt;h3 id=&#34;overview&#34;&gt;Overview
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;已知攻击:&lt;/strong&gt; 总结目前所有针对 McEliece 的攻击方法.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;进一步攻击的可能性:&lt;/strong&gt; 讨论未来可能出现的新攻击, 以及当前知识对这类可能性的评估.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;核心安全目标-ind-cca2&#34;&gt;核心安全目标: IND-CCA2
+&lt;/h4&gt;&lt;p&gt;Classic McEliece 的 IND-CCA2 安全性来自两个高置信度的组件叠加:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;原始 McEliece (1978)	OW-CPA 安全, 且安全强度极其稳定, 40+年未被攻破.&lt;/li&gt;
+&lt;li&gt;从 OW-CPA $\to$ IND-CCA2, 安全强度损失很小($\epsilon$ 很小).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;整体安全性 = (原始 OW-CPA 强度) - (微小损失 $\epsilon$). $\epsilon$ 很小, 所以最终安全强度接近 $2^\lambda$.&lt;/p&gt;
+&lt;h4 id=&#34;参数选择-256-位足够&#34;&gt;参数选择: 256 位足够
+&lt;/h4&gt;&lt;p&gt;所有参数集都使用 256 位的安全强度 (即 $\lambda = 256$).&lt;/p&gt;
+&lt;p&gt;即使某些参数集本身能提供更高的安全强度 (比如 $2^{300}$), 设计者也把秘密限制在 256 位.&lt;/p&gt;
+&lt;p&gt;因为 256 位已经足够安全 (暴力破解 $2^{256}$ 在物理上不可能), 再高没有实际意义, 只会增加计算开销.&lt;/p&gt;
+&lt;p&gt;如果担心 256 位不够 (比如担心未来量子计算机有超乎想象的加速), 理论上可以调大参数 $\ell$ 来增加秘密位数. 但这不是现实威胁.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心:&lt;/strong&gt; 256 位是实用与安全的平衡点, 更高是过度设计.&lt;/p&gt;
+&lt;p&gt;Classic McEliece 是在原始 McEliece 基础上经过一系列简单转换得到的. 安全分析按这些转换层层分解:&lt;/p&gt;
+&lt;h4 id=&#34;安全证明的局限性&#34;&gt;安全证明的局限性
+&lt;/h4&gt;&lt;p&gt;不要过度夸大安全证明的范围. 具体来说: 没有任何证明能排除存在一种 &amp;ldquo;比已知攻击快得多&amp;rdquo; 的攻击方法, 能够通过攻破 OW-CPA 来攻破 IND-CCA2.&lt;/p&gt;
+&lt;p&gt;我们对 OW-CPA 安全性的信心, 不是来自数学证明, 而是来自系统在长期、广泛的密码分析中存活下来这一事实.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心:&lt;/strong&gt; 安全性归根结底是经验性的, 不是纯数学的. McEliece 的安全性建立在 40 多年的攻击尝试之上, 而不是某个绝对的安全证明.&lt;/p&gt;
+&lt;h3 id=&#34;正确性&#34;&gt;正确性
+&lt;/h3&gt;&lt;p&gt;Classic McEliece KEM 是正确的. 这意味着: 对于 KeyGen 生成的每一个密钥对, 以及对于 Encap 产生的每一个密文和会话密钥, Decap 将会产生与 Encap 相同的会话密钥.&lt;/p&gt;
+&lt;p&gt;正确性通常被描述为一个功能性问题. 遇到解密失败的应用程序需要请求重传数据, 因此应用程序必须提供双向通信信道, 而且如果失败频繁发生, 可能会导致有问题的性能下降. 更微妙的是, 正确性也是一个安全性问题, 这也是为什么正确性在本文件中被涵盖的原因. 例如文献 [42] 中展示了一个利用基于格密码系统中偶发的解密失败进行攻击的案例. (解密失败不是无害的&amp;quot;bug&amp;quot;, 它可能成为攻击者的侧信道. 正确性直接关系到安全性.)&lt;/p&gt;
+&lt;h3 id=&#34;ow-cpa-security-of-the-original-mceliece-cryptosystem&#34;&gt;OW-CPA security of the original McEliece cryptosystem
+&lt;/h3&gt;&lt;h4 id=&#34;攻击类型&#34;&gt;攻击类型
+&lt;/h4&gt;&lt;p&gt;假设: 对于均匀随机矩阵 $G$, 从 $(G, Ga+e)$ 恢复 $a$ 是困难的.&lt;/p&gt;
+&lt;p&gt;那么如果一个攻击能攻破 McEliece 的 OW-CPA (即从 McEliece 公钥恢复 $a$), 那么这个攻击自然也能区分 McEliece 公钥和均匀随机矩阵.
+&lt;strong&gt;为什么?&lt;/strong&gt; 因为如果攻击者在 McEliece 公钥上能成功恢复 $a$, 但在随机矩阵上不能 (根据假设), 那么攻击者就能通过&amp;quot;是否能恢复 $a$&amp;quot; 来区分两者.&lt;/p&gt;
+&lt;p&gt;这不是双向的: 可能存在区分器, 但 OW-CPA 仍然是安全的 (即能区分公钥和随机矩阵, 但无法恢复 $a$).&lt;br&gt;
+所以区分器存在 $\ne$ OW-CPA 被攻破.&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;能否区分 $G$ 与随机矩阵&amp;quot;是判断一个攻击是否&amp;quot;利用结构&amp;quot;的最低标准.&lt;br&gt;
+能区分 $\Rightarrow$ 至少用了结构信息 $\Rightarrow$ 属于结构性攻击范畴.&lt;br&gt;
+不能区分 $\Rightarrow$ 所有攻击都是通用的 $\Rightarrow$ 安全性可归约到随机矩阵问题.&lt;/p&gt;
+&lt;p&gt;如果没有人能区分 McEliece 公钥和随机矩阵, 那么任何针对 McEliece 的 OW-CPA 攻击, 本质上也就是针对随机矩阵的 OW-CPA 攻击.
+因此, McEliece 的 OW-CPA 安全性不会比&amp;quot;随机矩阵的 OW-CPA 困难性&amp;quot;更差.&lt;/p&gt;
+&lt;p&gt;McEliece 的矩阵 $G$ 在攻击者眼中表现得像均匀随机矩阵. 如果这是真的 (没有区分器), 那么攻击 McEliece 的最好方法就是攻击一个随机矩阵.
+而攻击随机矩阵 (即一般线性码译码问题) 已经被研究了 40 多年, 进展极其缓慢.
+因此, McEliece 的 OW-CPA 安全性有坚实的经验基础.&lt;/p&gt;
+&lt;h2 id=&#34;参考文献&#34;&gt;参考文献
+&lt;/h2&gt;&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;Classic McEliece &lt;a class=&#34;link&#34; href=&#34;https://classic.mceliece.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://classic.mceliece.org/&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>简单记录下</title>
+        <link>https://sodalias.github.io/p/first-post/</link>
+        <pubDate>Sat, 21 Mar 2026 00:08:24 +0800</pubDate>
+        
+        <guid>https://sodalias.github.io/p/first-post/</guid>
+        <description>&lt;h2 id=&#34;markdown-alert&#34;&gt;Markdown Alert
+&lt;/h2&gt;&lt;blockquote class=&#34;alert alert-note&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📝&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;备注&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;突出显示用户在快速浏览时也应注意的信息。&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;blockquote class=&#34;alert alert-tip&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;💡&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;提示&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;可选信息，帮助用户更顺利地完成任务。&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;blockquote class=&#34;alert alert-important&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📌&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;重要&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;用户成功所必需的关键信息。&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;blockquote class=&#34;alert alert-warning&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;⚠️&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;警告&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;由于潜在风险而需要用户立即关注的关键内容。&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;blockquote class=&#34;alert alert-caution&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;🚨&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;注意&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;某个操作可能带来的负面后果。&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;blockquote class=&#34;alert alert-note&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📝&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;自定义标题&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;如果你想使用自定义标题，可以在方括号后面添加标题文本，如上所示。
+findstr /s /n /i &amp;ldquo;alert&amp;rdquo; *.*
+variables.scss, article.scss, render-blockquote.html&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;h2 id=&#34;脚注&#34;&gt;脚注
+&lt;/h2&gt;&lt;p&gt;脚注&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;是文档中用于添加补充说明或引用来源的一种机制。&lt;/p&gt;
+&lt;h3 id=&#34;脚注的特点&#34;&gt;脚注的特点
+&lt;/h3&gt;&lt;p&gt;脚注具有以下特点&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;自动编号&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;支持双向跳转&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;语法简单直观&lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#34;#fn:5&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;使用场景&#34;&gt;使用场景
+&lt;/h3&gt;&lt;p&gt;脚注适用于以下场景&lt;sup id=&#34;fnref:6&#34;&gt;&lt;a href=&#34;#fn:6&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;6&lt;/a&gt;&lt;/sup&gt; &lt;sup id=&#34;fnref:7&#34;&gt;&lt;a href=&#34;#fn:7&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;7&lt;/a&gt;&lt;/sup&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;技术博客&lt;/li&gt;
+&lt;li&gt;学术笔记&lt;/li&gt;
+&lt;li&gt;参考文献管理&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;链接&#34;&gt;链接
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://sodalias.github.io/p/first-post/&#34; &gt;简单记录下&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;相册功能&#34;&gt;相册功能
+&lt;/h2&gt;&lt;p&gt;要创建一个相册，只需要将多张图片放在同一行（或同一个段落）中。&lt;/p&gt;
+&lt;h3 id=&#34;语法&#34;&gt;语法
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;![&lt;span class=&#34;nt&#34;&gt;图片 1&lt;/span&gt;](&lt;span class=&#34;na&#34;&gt;image1.jpg&lt;/span&gt;)  ![&lt;span class=&#34;nt&#34;&gt;图片 2&lt;/span&gt;](&lt;span class=&#34;na&#34;&gt;image2.jpg&lt;/span&gt;) 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;![&lt;span class=&#34;nt&#34;&gt;图片 3&lt;/span&gt;](&lt;span class=&#34;na&#34;&gt;image3.jpg&lt;/span&gt;)  ![&lt;span class=&#34;nt&#34;&gt;图片 4&lt;/span&gt;](&lt;span class=&#34;na&#34;&gt;image4.jpg&lt;/span&gt;) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;图片之间应该有两个空格，以确保它们在 Markdown 中保持在同一行。&lt;/p&gt;
+&lt;h2 id=&#34;代理设置&#34;&gt;代理设置
+&lt;/h2&gt;&lt;h3 id=&#34;windows终端代理&#34;&gt;Windows终端代理
+&lt;/h3&gt;&lt;h3 id=&#34;wsl终端代理&#34;&gt;WSL终端代理
+&lt;/h3&gt;&lt;p&gt;首先找到 Windows 主机的 IP (在 WSL 内执行)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;grep nameserver /etc/resolv.conf &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; awk &lt;span class=&#34;s1&#34;&gt;&amp;#39;{print $2}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;或者使用&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat /etc/resolv.conf &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep nameserver
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;在配置文件中 (如.bashrc ) 设置代理, 用主机 IP 替换 127.0.0.1&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# ip test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ip&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;curl cip.cc&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# proxy settings&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;setproxy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;unsetproxy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;unset https_proxy http_proxy all_proxy&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;alias&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;proxy_test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;curl -v google.com&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;开启 Allow LAN&lt;/p&gt;
+&lt;h2 id=&#34;参考文献示例-脚注&#34;&gt;参考文献示例 (脚注)
+&lt;/h2&gt;&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;脚注是出现在页面底部的注释，用于对正文内容进行补充说明或标注引用来源。&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
+&lt;p&gt;本示例来源于 Markdown 脚注功能测试文档。&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
+&lt;p&gt;脚注的编号是自动生成的，无需手动维护序号。&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
+&lt;p&gt;点击正文中的脚注标记可以跳转到对应的脚注内容，点击脚注后的返回箭头可以跳回原文位置。&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34;&gt;
+&lt;p&gt;脚注语法仅需 &lt;code&gt;[^key]&lt;/code&gt; 和 &lt;code&gt;[^key]: 内容&lt;/code&gt; 两种格式。&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:6&#34;&gt;
+&lt;p&gt;技术博客中常用脚注来标注参考文献或技术细节。&amp;#160;&lt;a href=&#34;#fnref:6&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:7&#34;&gt;
+&lt;p&gt;学术笔记中脚注可以用来添加补充说明或引用来源。&amp;#160;&lt;a href=&#34;#fnref:7&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

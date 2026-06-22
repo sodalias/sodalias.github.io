@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Cryptography on soda</title>
+        <link>https://sodalias.github.io/tags/cryptography/</link>
+        <description>Recent content in Cryptography on soda</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>soda</copyright>
+        <lastBuildDate>Mon, 06 Apr 2026 17:33:53 +0800</lastBuildDate><atom:link href="https://sodalias.github.io/tags/cryptography/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>语义安全的公钥密钥体制的相关定义</title>
+        <link>https://sodalias.github.io/p/definitions-of-semantic-security/</link>
+        <pubDate>Fri, 03 Apr 2026 12:57:00 +0800</pubDate>
+        
+        <guid>https://sodalias.github.io/p/definitions-of-semantic-security/</guid>
+        <description>&lt;h2 id=&#34;公钥密码学的一些概念和定义&#34;&gt;公钥密码学的一些概念和定义&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;
+&lt;/h2&gt;&lt;p&gt;一个公钥加密方案是一个 PPT 算法元组 $(\mathrm{KeyGen}, \mathcal E, \mathcal D)$.&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;$(\mathrm{KeyGen}, \mathcal E, \mathcal D)$:&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ol&gt;
+&lt;li&gt;$\mathrm{KeyGen}(\mathcal K)$ 是密钥生成算法. 输入为安全参数 $\mathcal K$, 输出为一个对 $(\mathrm{pk}, \mathrm{sk})$, 其中 $\mathrm{pk}$ 是公钥, $\mathrm{sk}$ 是私钥. 表示为 $(\mathrm{pk}, \mathrm{sk}) \gets \mathrm{KeyGen}(\mathcal K)$.&lt;/li&gt;
+&lt;li&gt;$\mathcal E$ 是加密算法. 输入消息空间 $\mathcal M$ 的一个明文 $M$ 和公钥 $\mathrm{pk}$, 算法 $\mathcal E_{\mathrm{pk}}(M)$ 返回一个长为多项式 $p(\mathcal K)$的密文, 表示为 $\mathrm{CT} = \mathcal E_{\mathrm{pk}}(M)$.&lt;/li&gt;
+&lt;li&gt;$\mathcal D$ 是解密算法. 输入密文 $\mathrm{CT}$ 和密钥 $\mathrm{sk}$, $\mathcal D_{\mathrm{sk}}(\mathrm{CT})$ 返回一个消息 $M$ 或 $\bot$. 表示为 $M = \mathcal D_{\mathrm{sk}}(\mathrm{CT})$.&lt;/li&gt;
+&lt;/ol&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;公钥加密方案的正确性要求: 对于任意 $M \in \mathcal M$ 以及 $\mathrm{KeyGen}$ 的任意输出 $(\mathrm{pk}, \mathrm{sk})$, 都有 $D_{\mathrm{sk}}(\mathcal E_{\mathrm{pk}}(M)) = M$.&lt;/p&gt;
+&lt;p&gt;若定义公钥加密方案的安全性为: 如果敌手已知某个随机明文所对应的密文, 不能得出明文的完整信息, 这种定义是一个很弱的安全概念, 因为敌手虽然不能得出明文的完整信息, 但有可能得到明文的部分信息. 一个安全的加密方案应使敌手通过密文得不到明文的任何部分信息, 即使是 $1$ 比特的信息. 这就是加密方案语义安全的概念, 由 Goldwasser 和 Micali 提出&lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, 奠定了现代密码学理论的数学基础.&lt;/p&gt;
+&lt;h3 id=&#34;选择明文攻击下的不可区分性&#34;&gt;选择明文攻击下的不可区分性
+&lt;/h3&gt;&lt;p&gt;公钥加密方案在选择明文攻击 (Chosen Plaintext Attack, CPA) 下的 IND 游戏 (称为 IND-CPA 游戏) 如下:&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CPA&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ol&gt;
+&lt;li&gt;初始化. 挑战者产生系统 $\Pi$, 敌手 (表示为 $\mathcal A$) 获得系统的公钥.&lt;/li&gt;
+&lt;li&gt;敌手产生明文消息, 得到系统加密后的密文 (可多项式有界次).&lt;/li&gt;
+&lt;li&gt;挑战. 敌手输出两个长度相同的消息 $M_0$ 和 $M_1$. 挑战者随机选择 $\beta \gets_R \{ 0, 1 \}$, 将 $M_{\beta}$ 加密, 并将密文 $C^*$ (称为目标密文) 给敌手.&lt;/li&gt;
+&lt;li&gt;猜测. 敌手输出 $\beta^{\prime}$, 如果 $\beta = \beta^{\prime}$, 则敌手攻击成功.&lt;/li&gt;
+&lt;/ol&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;敌手的优势可定义为参数 $\mathcal K$ 的函数:
+&lt;/p&gt;
+$$
+\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CPA}} (\mathcal K) = \Bigg \lvert  \mathrm{Pr}[\beta^{\prime} = \beta] - \frac{1}{2} \Bigg \rvert.
+$$&lt;p&gt;
+其中 $\mathcal K$ 是安全参数, 用来确定加密方案密钥的长度.&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CPA 安全&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;如果对任何多项式时间的敌手 $\mathcal A$, 存在一个可忽略的函数 $\epsilon(\mathcal K)$, 使得 $\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CPA}} (\mathcal K) \le \epsilon(\mathcal K)$, 那么称这个加密算法 $\Pi$ 是语义安全的, 或者称为在选择明文攻击下具有不可区分性, 简称为 IND-CPA 安全.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;h3 id=&#34;选择密文攻击下的不可区分性&#34;&gt;选择密文攻击下的不可区分性
+&lt;/h3&gt;&lt;p&gt;为了描述敌手的主动攻击, Naor 和 Yung 提出了 (非适应性) 选择密文攻击 (Chosen Ciphertext Attack, CCA) 的概念&lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;, 其中敌手在获得目标密文以前, 可以访问解密谕言机 (Oracle). 公钥加密方案在选择密文攻击下的 IND 游戏 (称为 IND-CCA 游戏) 如下:&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CCA&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ol&gt;
+&lt;li&gt;初始化. 挑战者产生系统 $\Pi$, 敌手获得系统的公钥.&lt;/li&gt;
+&lt;li&gt;训练. 敌手向挑战者 (或解密谕言机) 做解密询问 (可多项式有界次), 即取密文 $\mathrm{CT}$ 给挑战者, 挑战者解密后, 将明文给敌手.&lt;/li&gt;
+&lt;li&gt;挑战. 敌手输出两个长度相同的消息 $M_0$ 和 $M_1$, 再从挑战者接收 $M_{\beta}$ 的密文, 其中随机值 $\beta \gets_R \{ 0, 1 \}$.&lt;/li&gt;
+&lt;li&gt;猜测. 敌手输出 $\beta^{\prime}$, 如果 $\beta = \beta^{\prime}$, 则敌手攻击成功.&lt;/li&gt;
+&lt;/ol&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;敌手的优势定义为安全参数 $\mathcal K$ 的函数:
+&lt;/p&gt;
+$$
+\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CCA}} (\mathcal K) = \Bigg \lvert  \mathrm{Pr}[\beta^{\prime} = \beta] - \frac{1}{2} \Bigg \rvert.
+$$&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CCA 安全&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;如果对任何多项式时间的敌手 $\mathcal A$, 存在一个可忽略的函数 $\epsilon(\mathcal K)$, 使得 $\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CCA}} (\mathcal K) \le \epsilon(\mathcal K)$, 那么称这个加密算法 $\Pi$ 在选择密文攻击下具有不可区分性, 或者称为 IND-CCA 安全.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;h3 id=&#34;适应性选择密文攻击下的不可区分性&#34;&gt;适应性选择密文攻击下的不可区分性
+&lt;/h3&gt;&lt;p&gt;Dolev, Dwork, Naor&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;以及 Sahai&lt;sup id=&#34;fnref:5&#34;&gt;&lt;a href=&#34;#fn:5&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;提出了适应性选择密文攻击 (Adaptive Chosen Ciphertext Attack, CCA2) 的概念, 其中敌手获得目标密文后, 可以向网络中注入消息 (可以和目标密文相关), 然后通过和网络中的用户交互, 获得与目标密文相应的明文的部分消息.&lt;/p&gt;
+&lt;p&gt;公钥加密方案在适应性选择密文攻击下的 IND 游戏 (称为 IND-CCA2 游戏) 如下:&lt;/p&gt;
+&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CCA2&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ol&gt;
+&lt;li&gt;初始化. 挑战者产生系统 $\Pi$, 敌手获得系统的公钥.&lt;/li&gt;
+&lt;li&gt;训练阶段1. 敌手向挑战者 (或解密谕言机) 做解密询问 (可多项式有界次), 即取密文 $\mathrm{CT}$ 给挑战者, 挑战者解密后, 将明文给敌手.&lt;/li&gt;
+&lt;li&gt;挑战. 敌手输出两个长度相同的消息 $M_0$ 和 $M_1$, 再从挑战者接收 $M_{\beta}$ 的密文 $C^{*}$, 其中随机值 $\beta \gets_R \{ 0, 1 \}$.&lt;/li&gt;
+&lt;li&gt;训练阶段2. 敌手继续向挑战者 (或解密谕言机) 做解密询问 (可多项式有界次), 即取密文 $\mathrm{CT}$ 给挑战者 ($\mathrm{CT} \ne C^{*}$), 挑战者解密后,将明文给敌手.&lt;/li&gt;
+&lt;li&gt;猜测. 敌手输出 $\beta^{\prime}$, 如果 $\beta = \beta^{\prime}$, 则敌手攻击成功.&lt;/li&gt;
+&lt;/ol&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;敌手的优势定义为安全参数 $\mathcal K$ 的函数:
+&lt;/p&gt;
+$$
+\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CCA2}} (\mathcal K) = \Bigg \lvert  \mathrm{Pr}[\beta^{\prime} = \beta] - \frac{1}{2} \Bigg \rvert.
+$$&lt;blockquote class=&#34;alert alert-definition&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-title&#34;&gt;IND-CCA2 安全&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;p&gt;如果对任何多项式时间的敌手 $\mathcal A$, 存在一个可忽略的函数 $\epsilon(\mathcal K)$, 使得 $\mathrm{Adv}_{\Pi, \mathcal A}^{\mathrm{CCA2}} (\mathcal K) \le \epsilon(\mathcal K)$, 那么称这个加密算法 $\Pi$ 在适应性选择密文攻击下具有不可区分性, 或者称为 IND-CCA2 安全.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;h2 id=&#34;参考文献&#34;&gt;参考文献
+&lt;/h2&gt;&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;杨波, &lt;em&gt;密码学中的可证明安全性&lt;/em&gt;, 清华大学出版社, 2017.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34;&gt;
+&lt;p&gt;S. Goldwasser, S. Micali, &amp;ldquo;Probabilistic encryption,&amp;rdquo; &lt;em&gt;J. Comput. Syst. Sci.&lt;/em&gt;, vol. 28, no. 2, pp. 270-299, 1984.&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34;&gt;
+&lt;p&gt;M. Naor, M. Yung, &amp;ldquo;Public-key cryptosystems provably secure against chosen ciphertext attacks,&amp;rdquo; in &lt;em&gt;Proceedings of the ACM symposium on Theory of Computing&lt;/em&gt;, Baltimore, MD, USA, pp. 427-437, 1990.&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:4&#34;&gt;
+&lt;p&gt;D. Dolev, C. Dwork, M. Naor, &amp;ldquo;Non-malleable cryptography,&amp;rdquo; in &lt;em&gt;Proceedings of the ACM symposium on Theory of Computing&lt;/em&gt;, New Orleans, LA, USA, pp. 542-552, 1991.&amp;#160;&lt;a href=&#34;#fnref:4&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:5&#34;&gt;
+&lt;p&gt;A. Sahai, &amp;ldquo;Non-malleable non-interactive zero knowledge and adaptive chosen-ciphertext security,&amp;rdquo; &lt;em&gt;40th Annual Symposium on Foundations of Computer Science&lt;/em&gt;, New York, NY, USA, pp. 543-553, 1999.&amp;#160;&lt;a href=&#34;#fnref:5&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

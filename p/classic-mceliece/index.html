@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Classic McEliece Specification1 安全稳定性 当McEliece密码体制使用的码维数 $k$ 随着 $n \\to \\infty$, $$ k = (0.8 + o(1)) $$ 时, 原始的Prange ISD (1962) 攻击的成本为 $$ (5+o(1))^t, $$ 这里 $t=(0.2+o(1))n / \\log_2 n$ 是密码体制中使用的错误个数, $o(1)$ 表示当 $n \\to \\infty$ 时收敛于 $0$. 经过大量研究, 目前已知的最优非量子攻击的成本依然为 $(5+o(1))^t$.\n">
+<title>Classic McEliece</title>
+
+<link rel='canonical' href='https://sodalias.github.io/p/classic-mceliece/'>
+
+<link rel="stylesheet" href="/scss/style.min.2abbb4713209a43eb996d2b3de07a5e8ce8918c19813602f20bb94a5b75f1685.css"><meta property='og:title' content="Classic McEliece">
+<meta property='og:description' content="Classic McEliece Specification1 安全稳定性 当McEliece密码体制使用的码维数 $k$ 随着 $n \\to \\infty$, $$ k = (0.8 + o(1)) $$ 时, 原始的Prange ISD (1962) 攻击的成本为 $$ (5+o(1))^t, $$ 这里 $t=(0.2+o(1))n / \\log_2 n$ 是密码体制中使用的错误个数, $o(1)$ 表示当 $n \\to \\infty$ 时收敛于 $0$. 经过大量研究, 目前已知的最优非量子攻击的成本依然为 $(5+o(1))^t$.\n">
+<meta property='og:url' content='https://sodalias.github.io/p/classic-mceliece/'>
+<meta property='og:site_name' content='soda'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='McEliece' /><meta property='article:tag' content='Code-Based Cryptography' /><meta property='article:published_time' content='2026-03-23T16:57:58&#43;08:00'/><meta property='article:modified_time' content='2026-04-21T08:14:57&#43;08:00'/>
+<meta name="twitter:title" content="Classic McEliece">
+<meta name="twitter:description" content="Classic McEliece Specification1 安全稳定性 当McEliece密码体制使用的码维数 $k$ 随着 $n \\to \\infty$, $$ k = (0.8 + o(1)) $$ 时, 原始的Prange ISD (1962) 攻击的成本为 $$ (5+o(1))^t, $$ 这里 $t=(0.2+o(1))n / \\log_2 n$ 是密码体制中使用的错误个数, $o(1)$ 表示当 $n \\to \\infty$ 时收敛于 $0$. 经过大量研究, 目前已知的最优非量子攻击的成本依然为 $(5+o(1))^t$.\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_2cfafd60e77e9be.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤣</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">soda</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href=''
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href=''
+                        target="_blank"
+                        title="X"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16l-4.267 0" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href=''
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/documentation/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-text"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M9 9l1 0" /><path d="M9 13l6 0" /><path d="M9 17l6 0" /></svg>
+                
+                <span>文档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/message/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-message"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 9h8" /><path d="M8 13h6" /><path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12" /></svg>
+                
+                <span>留言</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#classic-mceliece-specification">Classic McEliece Specification</a>
+      <ol>
+        <li><a href="#安全稳定性">安全稳定性</a>
+          <ol>
+            <li><a href="#与格密码的安全性比较">与格密码的安全性比较</a></li>
+          </ol>
+        </li>
+        <li><a href="#实现">实现</a>
+          <ol>
+            <li><a href="#密钥尺寸">密钥尺寸</a></li>
+            <li><a href="#时序攻击">时序攻击</a></li>
+          </ol>
+        </li>
+        <li><a href="#cryptosystem-specification">Cryptosystem specification</a>
+          <ol>
+            <li><a href="#简化行阶梯形式">简化行阶梯形式</a></li>
+            <li><a href="#系统形">系统形</a></li>
+            <li><a href="#semi-systematic-form">Semi-systematic form</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#guide-for-security-reviewers">Guide for Security Reviewers</a>
+      <ol>
+        <li><a href="#overview">Overview</a>
+          <ol>
+            <li><a href="#核心安全目标-ind-cca2">核心安全目标: IND-CCA2</a></li>
+            <li><a href="#参数选择-256-位足够">参数选择: 256 位足够</a></li>
+            <li><a href="#安全证明的局限性">安全证明的局限性</a></li>
+          </ol>
+        </li>
+        <li><a href="#正确性">正确性</a></li>
+        <li><a href="#ow-cpa-security-of-the-original-mceliece-cryptosystem">OW-CPA security of the original McEliece cryptosystem</a>
+          <ol>
+            <li><a href="#攻击类型">攻击类型</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/classic-mceliece/">Classic McEliece</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2026-03-23T16:57:58&#43;08:00'>2026-03-23</time>
+            </div>
+        
+
+        
+        
+            <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-pencil"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M10 18l5 -5a1.414 1.414 0 0 0 -2 -2l-5 5v2h2" /></svg>
+                <time>
+                    2026-04-21
+                </time>
+            </div>
+        
+
+        
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-word"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M9 12l1.333 5l1.667 -4l1.667 4l1.333 -5" /></svg>
+                <time class="article-time--wordcount">
+                    2511 字
+                </time>
+            </div>
+        
+
+        
+        <div id="viewCount">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+            <time class="article-time--reading">
+                
+                <span id="vercount_value_page_pv">loading... </span>次
+            </time>
+        </div>
+        
+
+
+        
+
+    </footer>
+    
+
+    
+    <header class="article-category">
+        
+            
+            
+            
+            <a href="/categories/notes/" style="background-color: hsl(4, 60%, 84%); color: hsl(4, 60%, 15%);">
+                笔记
+            </a>
+        
+    </header>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="classic-mceliece-specification">Classic McEliece Specification<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>
+</h2><h3 id="安全稳定性">安全稳定性
+</h3><p>当McEliece密码体制使用的码维数 $k$ 随着 $n \to \infty$,
+</p>
+$$
+k = (0.8 + o(1))
+$$<p>
+时, 原始的Prange ISD (1962) 攻击的成本为
+</p>
+$$
+(5+o(1))^t,
+$$<p>
+这里 $t=(0.2+o(1))n / \log_2 n$ 是密码体制中使用的错误个数, $o(1)$ 表示当 $n \to \infty$ 时收敛于 $0$. 经过<a class="link" href="https://classic.mceliece.org/papers.html"  target="_blank" rel="noopener"
+    >大量研究</a>, 目前已知的最优非量子攻击的成本依然为 $(5+o(1))^t$.</p>
+<p>攻击McEliece密码体制的瓶颈在于庞大的搜索过程, Grover算法可应用于此搜索, 所以量子攻击的成本为 $(5+o(1))^{t/2}$.</p>
+<p>更一般地, 用 $R$ 替换 $0.8$, 等价于用 $1/(1-R)$ 替换 $5$. 对于任何给定的密钥长度, 当 $R$ 接近 $0.8$ 时安全性最高.</p>
+<h4 id="与格密码的安全性比较">与格密码的安全性比较
+</h4><p>图1展示了针对&quot;未破解&quot;的基于格的密码系统 (红线) 的非量子攻击的渐近指数与 McEliece 密码体制 (蓝线) 相比的进展. 其中 $AttackCost_{Y}(K)$ 表示 $Y$ 年针对密钥长度为 $K$ 的最佳攻击的成本. 图1显示, 2010年基于格的密码的渐近安全级别比 2024 年的渐近安全级别高 $45$%. 2000年, 基于格的密码的渐近安全级别比2024年的渐近安全级别高出超指数级 (superexponentially).
+因此, 针对 McEliece 的攻击改进幅度不大, 但针对格的攻击改进幅度则大得多.</p>
+<figure class="center"><img src="/p/classic-mceliece/img/asymptotics2024.svg"
+    alt="McEliece密码体制与格密码的安全性比较" width="860"><figcaption>
+      <p>图1. McEliece密码体制与格密码的安全性比较</p>
+    </figcaption>
+</figure>
+
+<h3 id="实现">实现
+</h3><h4 id="密钥尺寸">密钥尺寸
+</h4><p>Classic McEliece算法的公钥很长, 但密文很短. 公钥可以重复用于多个密文, 因此Classic McEliece 算法的总成本可以低于其他后量子加密系统. 对于&quot;静态密钥&quot; (例如身份密钥), Classic McEliece 算法通常是成本最低的选择; 对于&quot;临时密钥&quot;, 其他算法通常成本更低. Classic McEliece 密钥密文尺寸的实例如表1所示.</p>
+<div class="table-wrapper">
+  
+  
+    
+    <p class="table-caption" style="text-align: center;">
+      表2. Classic McEliece 密钥密文尺寸
+    </p>
+  
+  <div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: center">public key</th>
+          <th style="text-align: center">private key</th>
+          <th style="text-align: center">ciphertext</th>
+          <th style="text-align: center">session key</th>
+          <th style="text-align: center"></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">261120</td>
+          <td style="text-align: center">6492</td>
+          <td style="text-align: center">96</td>
+          <td style="text-align: center">32</td>
+          <td style="text-align: center">mceliece348864</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">524160</td>
+          <td style="text-align: center">13608</td>
+          <td style="text-align: center">156</td>
+          <td style="text-align: center">32</td>
+          <td style="text-align: center">mceliece460896</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">1044992</td>
+          <td style="text-align: center">13932</td>
+          <td style="text-align: center">208</td>
+          <td style="text-align: center">32</td>
+          <td style="text-align: center">mceliece6688128</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">1047319</td>
+          <td style="text-align: center">13948</td>
+          <td style="text-align: center">194</td>
+          <td style="text-align: center">32</td>
+          <td style="text-align: center">mceliece6960119</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">1357824</td>
+          <td style="text-align: center">14120</td>
+          <td style="text-align: center">208</td>
+          <td style="text-align: center">32</td>
+          <td style="text-align: center">mceliece8192128</td>
+      </tr>
+  </tbody>
+</table></div>
+
+</div>
+<h4 id="时序攻击">时序攻击
+</h4><p>为了抵御时序攻击 (Timing Attacks), Classic McEliece的官方实现从一开始就被设计成以恒定时间运行, 采用了 &ldquo;<a class="link" href="https://tungchou.github.io/papers/mcbits.pdf"  target="_blank" rel="noopener"
+    >McBits</a>&rdquo; 和 &ldquo;<a class="link" href="https://tungchou.github.io/papers/mcbits_revisited.pdf"  target="_blank" rel="noopener"
+    >McBits Revisited</a>&rdquo; 论文中介绍的技术.</p>
+<h3 id="cryptosystem-specification">Cryptosystem specification
+</h3><h4 id="简化行阶梯形式">简化行阶梯形式
+</h4><h4 id="系统形">系统形
+</h4><h4 id="semi-systematic-form">Semi-systematic form
+</h4><p>参数 $\mu$, $\nu$ 满足 $\nu \ge \mu \ge 0$.<br>
+定义: 一个秩为 $r$ 的矩阵 $R$ 在 $(\mu, \nu)$-semi-systematic form 中, 如果:</p>
+<ol>
+<li>$R$ 有 $r$ 行 (没有零行);</li>
+<li>对 $0 \le i &lt; r - \mu$, 有 $c_i = i$;</li>
+<li>对 $0 \le i &lt; r$, 有 $c_i \le i-\mu+\nu$.</li>
+</ol>
+<blockquote class="alert alert-note">
+        <div class="alert-header"><span class="alert-icon">📝</span><span class="alert-title">备注</span>
+        </div>
+        <div class="alert-body">
+            <ul>
+<li>前 $r - \mu$ 个前导 $1$ (pivot) 必须在列 $0,1,2,\ldots, r-\mu-1$ 上;</li>
+<li>所有 pivot 列索引 $c_i$ 不能太大, 具体受 $\mu$, $\nu$ 限制.</li>
+</ul>
+        </div>
+    </blockquote>
+<blockquote class="alert alert-note">
+        <div class="alert-header"><span class="alert-icon">📝</span><span class="alert-title">特殊情况</span>
+        </div>
+        <div class="alert-body">
+            <ul>
+<li>如果 $\mu = 0$, 条件 2 中 $c_i$ 对所有 $i$ 成立, 所以就是系统形.</li>
+<li>如果 $\mu = r$, 条件 2 没有约束, 条件 3: $c_i \le i - r + \nu$. 由于 $i \le r - 1$, 最宽松的情况是 $c_i \le \nu - 1$, 因此所有 pivot 都在前 $\nu$ 列内.</li>
+<li>一般情况下, 前 $r-\mu$ 个 pivot 严格对准列索引 $0,1,\ldots$, 剩下的 $\mu$ 个 pivot 可以向右偏移, 但总偏移量受 $\nu$ 控制.</li>
+</ul>
+        </div>
+    </blockquote>
+<p>举例: 设 $n=10$, $r=5$, 取 $\mu = 2$, $\nu=4$. 条件:</p>
+<ul>
+<li>$r-\mu=3$, 所以前 $3$ 个 pivot 必须在列 $0,1,2$;</li>
+<li>所有 pivot 列 $c_i$ 满足 $c_i \le i-2+4 = i+2$.</li>
+</ul>
+<div class="table-wrapper">
+  
+  
+    
+    <p class="table-caption" style="text-align: center;">
+      表3. Semi-Systematic Form 例子
+    </p>
+  
+  <div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th style="text-align: center">$i$</th>
+          <th style="text-align: center">$i+2$</th>
+          <th style="text-align: center">允许的最大 pivot 列</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: center">$0$</td>
+          <td style="text-align: center">$2$</td>
+          <td style="text-align: center">$c_0 = 0$</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">$1$</td>
+          <td style="text-align: center">$3$</td>
+          <td style="text-align: center">$c_1 = 1$</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">$2$</td>
+          <td style="text-align: center">$4$</td>
+          <td style="text-align: center">$c_2 = 2$</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">$3$</td>
+          <td style="text-align: center">$5$</td>
+          <td style="text-align: center">$3 \le c_3 \le 5$</td>
+      </tr>
+      <tr>
+          <td style="text-align: center">$4$</td>
+          <td style="text-align: center">$6$</td>
+          <td style="text-align: center">$4 \le c_4 \le 6$</td>
+      </tr>
+  </tbody>
+</table></div>
+
+</div>
+<p>一个可能的矩阵
+</p>
+$$
+R = \begin{pmatrix}
+1 & 0 & 0 & * & * & * & * & * & * & * \\
+0 & 1 & 0 & * & * & * & * & * & * & * \\
+0 & 0 & 1 & * & * & * & * & * & * & * \\
+0 & 0 & 0 & 0 & 1 & * & * & * & * & * \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & * & * & * 
+\end{pmatrix}
+$$<h2 id="guide-for-security-reviewers">Guide for Security Reviewers
+</h2><h3 id="overview">Overview
+</h3><ul>
+<li><strong>已知攻击:</strong> 总结目前所有针对 McEliece 的攻击方法.</li>
+<li><strong>进一步攻击的可能性:</strong> 讨论未来可能出现的新攻击, 以及当前知识对这类可能性的评估.</li>
+</ul>
+<h4 id="核心安全目标-ind-cca2">核心安全目标: IND-CCA2
+</h4><p>Classic McEliece 的 IND-CCA2 安全性来自两个高置信度的组件叠加:</p>
+<ol>
+<li>原始 McEliece (1978)	OW-CPA 安全, 且安全强度极其稳定, 40+年未被攻破.</li>
+<li>从 OW-CPA $\to$ IND-CCA2, 安全强度损失很小($\epsilon$ 很小).</li>
+</ol>
+<p>整体安全性 = (原始 OW-CPA 强度) - (微小损失 $\epsilon$). $\epsilon$ 很小, 所以最终安全强度接近 $2^\lambda$.</p>
+<h4 id="参数选择-256-位足够">参数选择: 256 位足够
+</h4><p>所有参数集都使用 256 位的安全强度 (即 $\lambda = 256$).</p>
+<p>即使某些参数集本身能提供更高的安全强度 (比如 $2^{300}$), 设计者也把秘密限制在 256 位.</p>
+<p>因为 256 位已经足够安全 (暴力破解 $2^{256}$ 在物理上不可能), 再高没有实际意义, 只会增加计算开销.</p>
+<p>如果担心 256 位不够 (比如担心未来量子计算机有超乎想象的加速), 理论上可以调大参数 $\ell$ 来增加秘密位数. 但这不是现实威胁.</p>
+<p><strong>核心:</strong> 256 位是实用与安全的平衡点, 更高是过度设计.</p>
+<p>Classic McEliece 是在原始 McEliece 基础上经过一系列简单转换得到的. 安全分析按这些转换层层分解:</p>
+<h4 id="安全证明的局限性">安全证明的局限性
+</h4><p>不要过度夸大安全证明的范围. 具体来说: 没有任何证明能排除存在一种 &ldquo;比已知攻击快得多&rdquo; 的攻击方法, 能够通过攻破 OW-CPA 来攻破 IND-CCA2.</p>
+<p>我们对 OW-CPA 安全性的信心, 不是来自数学证明, 而是来自系统在长期、广泛的密码分析中存活下来这一事实.</p>
+<p><strong>核心:</strong> 安全性归根结底是经验性的, 不是纯数学的. McEliece 的安全性建立在 40 多年的攻击尝试之上, 而不是某个绝对的安全证明.</p>
+<h3 id="正确性">正确性
+</h3><p>Classic McEliece KEM 是正确的. 这意味着: 对于 KeyGen 生成的每一个密钥对, 以及对于 Encap 产生的每一个密文和会话密钥, Decap 将会产生与 Encap 相同的会话密钥.</p>
+<p>正确性通常被描述为一个功能性问题. 遇到解密失败的应用程序需要请求重传数据, 因此应用程序必须提供双向通信信道, 而且如果失败频繁发生, 可能会导致有问题的性能下降. 更微妙的是, 正确性也是一个安全性问题, 这也是为什么正确性在本文件中被涵盖的原因. 例如文献 [42] 中展示了一个利用基于格密码系统中偶发的解密失败进行攻击的案例. (解密失败不是无害的&quot;bug&quot;, 它可能成为攻击者的侧信道. 正确性直接关系到安全性.)</p>
+<h3 id="ow-cpa-security-of-the-original-mceliece-cryptosystem">OW-CPA security of the original McEliece cryptosystem
+</h3><h4 id="攻击类型">攻击类型
+</h4><p>假设: 对于均匀随机矩阵 $G$, 从 $(G, Ga+e)$ 恢复 $a$ 是困难的.</p>
+<p>那么如果一个攻击能攻破 McEliece 的 OW-CPA (即从 McEliece 公钥恢复 $a$), 那么这个攻击自然也能区分 McEliece 公钥和均匀随机矩阵.
+<strong>为什么?</strong> 因为如果攻击者在 McEliece 公钥上能成功恢复 $a$, 但在随机矩阵上不能 (根据假设), 那么攻击者就能通过&quot;是否能恢复 $a$&quot; 来区分两者.</p>
+<p>这不是双向的: 可能存在区分器, 但 OW-CPA 仍然是安全的 (即能区分公钥和随机矩阵, 但无法恢复 $a$).<br>
+所以区分器存在 $\ne$ OW-CPA 被攻破.</p>
+<p>&ldquo;能否区分 $G$ 与随机矩阵&quot;是判断一个攻击是否&quot;利用结构&quot;的最低标准.<br>
+能区分 $\Rightarrow$ 至少用了结构信息 $\Rightarrow$ 属于结构性攻击范畴.<br>
+不能区分 $\Rightarrow$ 所有攻击都是通用的 $\Rightarrow$ 安全性可归约到随机矩阵问题.</p>
+<p>如果没有人能区分 McEliece 公钥和随机矩阵, 那么任何针对 McEliece 的 OW-CPA 攻击, 本质上也就是针对随机矩阵的 OW-CPA 攻击.
+因此, McEliece 的 OW-CPA 安全性不会比&quot;随机矩阵的 OW-CPA 困难性&quot;更差.</p>
+<p>McEliece 的矩阵 $G$ 在攻击者眼中表现得像均匀随机矩阵. 如果这是真的 (没有区分器), 那么攻击 McEliece 的最好方法就是攻击一个随机矩阵.
+而攻击随机矩阵 (即一般线性码译码问题) 已经被研究了 40 多年, 进展极其缓慢.
+因此, McEliece 的 OW-CPA 安全性有坚实的经验基础.</p>
+<h2 id="参考文献">参考文献
+</h2><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Classic McEliece <a class="link" href="https://classic.mceliece.org/"  target="_blank" rel="noopener"
+    >https://classic.mceliece.org/</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            
+            <a href="/tags/mceliece/">McEliece</a>
+        
+            
+            <a href="/tags/code-based-cryptography/">Code-Based Cryptography</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under <a class="link" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"  target="_blank" rel="noopener"
+    >CC BY-NC-SA 4.0</a></span>
+    </section>
+    
+
+    
+
+    
+     
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-file-pencil"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" /><path d="M10 18l5 -5a1.414 1.414 0 0 0 -2 -2l-5 5v2h2" /></svg>
+        <span>
+            最后更新于 2026-04-21 08:14
+        </span>
+    </section>
+    
+</footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const elementsToRender = [".main-article", ".widget--toc"];
+
+        elementsToRender.forEach(selector => {
+            const element = document.querySelector(selector);
+            if (element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false },
+                        { left: "\\(", right: "\\)", display: false },
+                        { left: "\\[", right: "\\]", display: true }
+                    ],
+                    ignoredClasses: ["gist"]
+                });
+            }
+        });
+    });
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/code-equivalence/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">码等价问题笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/definitions-of-semantic-security/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">语义安全的公钥密钥体制的相关定义</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/magma-notes/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Magma常用代码</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/first-post/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">简单记录下</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script
+    src="https://giscus.app/client.js"
+    data-repo="sodalias/sodalias.github.io"
+    data-repo-id="R_kgDOSIgvoA"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOSIgvoM4C7WGT"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="en"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+></script>
+<script>
+    function setGiscusTheme(theme) {
+        let giscus = document.querySelector("iframe.giscus-frame");
+        if (giscus) {
+            giscus.contentWindow.postMessage(
+                {
+                    giscus: {
+                        setConfig: {
+                            theme: theme,
+                        },
+                    },
+                },
+                "https://giscus.app"
+            );
+        }
+    }
+
+    (function () {
+        addEventListener("message", (e) => {
+            if (event.origin !== "https://giscus.app") return;
+            handler();
+        });
+        window.addEventListener("onColorSchemeChange", handler);
+
+        function handler() {
+            if (document.documentElement.dataset.scheme === "light") {
+                setGiscusTheme('light');
+            } else {
+                setGiscusTheme('dark_dimmed');
+            }
+        }
+    })();
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 soda
+    </section>
+
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.34.2">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+    
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<script defer src="https://cn.vercount.one/js"></script>
+
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://sodalias.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+
+<style>
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://sodalias.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+<script>
+    function showHideView() {
+        
+        let viewCounts = document.querySelectorAll("#viewCount");
+        if (viewCounts) {
+            
+            let article =  document.querySelector(".article-page");
+            if (!article) {
+                viewCounts.forEach(ele => {
+                    ele.style.display = 'none';
+                });
+            }
+        }
+    }
+    
+    showHideView();
+</script>
+
+    </body>
+</html>

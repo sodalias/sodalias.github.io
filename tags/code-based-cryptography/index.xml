@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Code-Based Cryptography on soda</title>
+        <link>https://sodalias.github.io/tags/code-based-cryptography/</link>
+        <description>Recent content in Code-Based Cryptography on soda</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>soda</copyright>
+        <lastBuildDate>Tue, 21 Apr 2026 08:14:57 +0800</lastBuildDate><atom:link href="https://sodalias.github.io/tags/code-based-cryptography/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Classic McEliece</title>
+        <link>https://sodalias.github.io/p/classic-mceliece/</link>
+        <pubDate>Mon, 23 Mar 2026 16:57:58 +0800</pubDate>
+        
+        <guid>https://sodalias.github.io/p/classic-mceliece/</guid>
+        <description>&lt;h2 id=&#34;classic-mceliece-specification&#34;&gt;Classic McEliece Specification&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;安全稳定性&#34;&gt;安全稳定性
+&lt;/h3&gt;&lt;p&gt;当McEliece密码体制使用的码维数 $k$ 随着 $n \to \infty$,
+&lt;/p&gt;
+$$
+k = (0.8 + o(1))
+$$&lt;p&gt;
+时, 原始的Prange ISD (1962) 攻击的成本为
+&lt;/p&gt;
+$$
+(5+o(1))^t,
+$$&lt;p&gt;
+这里 $t=(0.2+o(1))n / \log_2 n$ 是密码体制中使用的错误个数, $o(1)$ 表示当 $n \to \infty$ 时收敛于 $0$. 经过&lt;a class=&#34;link&#34; href=&#34;https://classic.mceliece.org/papers.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;大量研究&lt;/a&gt;, 目前已知的最优非量子攻击的成本依然为 $(5+o(1))^t$.&lt;/p&gt;
+&lt;p&gt;攻击McEliece密码体制的瓶颈在于庞大的搜索过程, Grover算法可应用于此搜索, 所以量子攻击的成本为 $(5+o(1))^{t/2}$.&lt;/p&gt;
+&lt;p&gt;更一般地, 用 $R$ 替换 $0.8$, 等价于用 $1/(1-R)$ 替换 $5$. 对于任何给定的密钥长度, 当 $R$ 接近 $0.8$ 时安全性最高.&lt;/p&gt;
+&lt;h4 id=&#34;与格密码的安全性比较&#34;&gt;与格密码的安全性比较
+&lt;/h4&gt;&lt;p&gt;图1展示了针对&amp;quot;未破解&amp;quot;的基于格的密码系统 (红线) 的非量子攻击的渐近指数与 McEliece 密码体制 (蓝线) 相比的进展. 其中 $AttackCost_{Y}(K)$ 表示 $Y$ 年针对密钥长度为 $K$ 的最佳攻击的成本. 图1显示, 2010年基于格的密码的渐近安全级别比 2024 年的渐近安全级别高 $45$%. 2000年, 基于格的密码的渐近安全级别比2024年的渐近安全级别高出超指数级 (superexponentially).
+因此, 针对 McEliece 的攻击改进幅度不大, 但针对格的攻击改进幅度则大得多.&lt;/p&gt;
+&lt;figure class=&#34;center&#34;&gt;&lt;img src=&#34;https://sodalias.github.io/p/classic-mceliece/img/asymptotics2024.svg&#34;
+    alt=&#34;McEliece密码体制与格密码的安全性比较&#34; width=&#34;860&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;图1. McEliece密码体制与格密码的安全性比较&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;实现&#34;&gt;实现
+&lt;/h3&gt;&lt;h4 id=&#34;密钥尺寸&#34;&gt;密钥尺寸
+&lt;/h4&gt;&lt;p&gt;Classic McEliece算法的公钥很长, 但密文很短. 公钥可以重复用于多个密文, 因此Classic McEliece 算法的总成本可以低于其他后量子加密系统. 对于&amp;quot;静态密钥&amp;quot; (例如身份密钥), Classic McEliece 算法通常是成本最低的选择; 对于&amp;quot;临时密钥&amp;quot;, 其他算法通常成本更低. Classic McEliece 密钥密文尺寸的实例如表1所示.&lt;/p&gt;
+&lt;div class=&#34;table-wrapper&#34;&gt;
+  
+  
+    
+    &lt;p class=&#34;table-caption&#34; style=&#34;text-align: center;&#34;&gt;
+      表2. Classic McEliece 密钥密文尺寸
+    &lt;/p&gt;
+  
+  &lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;public key&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;private key&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;ciphertext&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;session key&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;261120&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;6492&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;96&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece348864&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;524160&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;13608&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;156&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece460896&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;1044992&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;13932&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;208&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece6688128&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;1047319&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;13948&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;194&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece6960119&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;1357824&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;14120&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;208&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;32&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;mceliece8192128&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+&lt;h4 id=&#34;时序攻击&#34;&gt;时序攻击
+&lt;/h4&gt;&lt;p&gt;为了抵御时序攻击 (Timing Attacks), Classic McEliece的官方实现从一开始就被设计成以恒定时间运行, 采用了 &amp;ldquo;&lt;a class=&#34;link&#34; href=&#34;https://tungchou.github.io/papers/mcbits.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;McBits&lt;/a&gt;&amp;rdquo; 和 &amp;ldquo;&lt;a class=&#34;link&#34; href=&#34;https://tungchou.github.io/papers/mcbits_revisited.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;McBits Revisited&lt;/a&gt;&amp;rdquo; 论文中介绍的技术.&lt;/p&gt;
+&lt;h3 id=&#34;cryptosystem-specification&#34;&gt;Cryptosystem specification
+&lt;/h3&gt;&lt;h4 id=&#34;简化行阶梯形式&#34;&gt;简化行阶梯形式
+&lt;/h4&gt;&lt;h4 id=&#34;系统形&#34;&gt;系统形
+&lt;/h4&gt;&lt;h4 id=&#34;semi-systematic-form&#34;&gt;Semi-systematic form
+&lt;/h4&gt;&lt;p&gt;参数 $\mu$, $\nu$ 满足 $\nu \ge \mu \ge 0$.&lt;br&gt;
+定义: 一个秩为 $r$ 的矩阵 $R$ 在 $(\mu, \nu)$-semi-systematic form 中, 如果:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;$R$ 有 $r$ 行 (没有零行);&lt;/li&gt;
+&lt;li&gt;对 $0 \le i &amp;lt; r - \mu$, 有 $c_i = i$;&lt;/li&gt;
+&lt;li&gt;对 $0 \le i &amp;lt; r$, 有 $c_i \le i-\mu+\nu$.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote class=&#34;alert alert-note&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📝&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;备注&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ul&gt;
+&lt;li&gt;前 $r - \mu$ 个前导 $1$ (pivot) 必须在列 $0,1,2,\ldots, r-\mu-1$ 上;&lt;/li&gt;
+&lt;li&gt;所有 pivot 列索引 $c_i$ 不能太大, 具体受 $\mu$, $\nu$ 限制.&lt;/li&gt;
+&lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;blockquote class=&#34;alert alert-note&#34;&gt;
+        &lt;div class=&#34;alert-header&#34;&gt;&lt;span class=&#34;alert-icon&#34;&gt;📝&lt;/span&gt;&lt;span class=&#34;alert-title&#34;&gt;特殊情况&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;alert-body&#34;&gt;
+            &lt;ul&gt;
+&lt;li&gt;如果 $\mu = 0$, 条件 2 中 $c_i$ 对所有 $i$ 成立, 所以就是系统形.&lt;/li&gt;
+&lt;li&gt;如果 $\mu = r$, 条件 2 没有约束, 条件 3: $c_i \le i - r + \nu$. 由于 $i \le r - 1$, 最宽松的情况是 $c_i \le \nu - 1$, 因此所有 pivot 都在前 $\nu$ 列内.&lt;/li&gt;
+&lt;li&gt;一般情况下, 前 $r-\mu$ 个 pivot 严格对准列索引 $0,1,\ldots$, 剩下的 $\mu$ 个 pivot 可以向右偏移, 但总偏移量受 $\nu$ 控制.&lt;/li&gt;
+&lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;举例: 设 $n=10$, $r=5$, 取 $\mu = 2$, $\nu=4$. 条件:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$r-\mu=3$, 所以前 $3$ 个 pivot 必须在列 $0,1,2$;&lt;/li&gt;
+&lt;li&gt;所有 pivot 列 $c_i$ 满足 $c_i \le i-2+4 = i+2$.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;table-wrapper&#34;&gt;
+  
+  
+    
+    &lt;p class=&#34;table-caption&#34; style=&#34;text-align: center;&#34;&gt;
+      表3. Semi-Systematic Form 例子
+    &lt;/p&gt;
+  
+  &lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$i$&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;$i+2$&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;允许的最大 pivot 列&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$0$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$2$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$c_0 = 0$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$1$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$3$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$c_1 = 1$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$2$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$4$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$c_2 = 2$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$3$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$5$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$3 \le c_3 \le 5$&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$4$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$6$&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;$4 \le c_4 \le 6$&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+&lt;p&gt;一个可能的矩阵
+&lt;/p&gt;
+$$
+R = \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * \\
+0 &amp; 1 &amp; 0 &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * \\
+0 &amp; 0 &amp; 1 &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * &amp; * \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; * &amp; * &amp; * &amp; * &amp; * \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; * &amp; * &amp; * 
+\end{pmatrix}
+$$&lt;h2 id=&#34;guide-for-security-reviewers&#34;&gt;Guide for Security Reviewers
+&lt;/h2&gt;&lt;h3 id=&#34;overview&#34;&gt;Overview
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;已知攻击:&lt;/strong&gt; 总结目前所有针对 McEliece 的攻击方法.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;进一步攻击的可能性:&lt;/strong&gt; 讨论未来可能出现的新攻击, 以及当前知识对这类可能性的评估.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;核心安全目标-ind-cca2&#34;&gt;核心安全目标: IND-CCA2
+&lt;/h4&gt;&lt;p&gt;Classic McEliece 的 IND-CCA2 安全性来自两个高置信度的组件叠加:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;原始 McEliece (1978)	OW-CPA 安全, 且安全强度极其稳定, 40+年未被攻破.&lt;/li&gt;
+&lt;li&gt;从 OW-CPA $\to$ IND-CCA2, 安全强度损失很小($\epsilon$ 很小).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;整体安全性 = (原始 OW-CPA 强度) - (微小损失 $\epsilon$). $\epsilon$ 很小, 所以最终安全强度接近 $2^\lambda$.&lt;/p&gt;
+&lt;h4 id=&#34;参数选择-256-位足够&#34;&gt;参数选择: 256 位足够
+&lt;/h4&gt;&lt;p&gt;所有参数集都使用 256 位的安全强度 (即 $\lambda = 256$).&lt;/p&gt;
+&lt;p&gt;即使某些参数集本身能提供更高的安全强度 (比如 $2^{300}$), 设计者也把秘密限制在 256 位.&lt;/p&gt;
+&lt;p&gt;因为 256 位已经足够安全 (暴力破解 $2^{256}$ 在物理上不可能), 再高没有实际意义, 只会增加计算开销.&lt;/p&gt;
+&lt;p&gt;如果担心 256 位不够 (比如担心未来量子计算机有超乎想象的加速), 理论上可以调大参数 $\ell$ 来增加秘密位数. 但这不是现实威胁.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心:&lt;/strong&gt; 256 位是实用与安全的平衡点, 更高是过度设计.&lt;/p&gt;
+&lt;p&gt;Classic McEliece 是在原始 McEliece 基础上经过一系列简单转换得到的. 安全分析按这些转换层层分解:&lt;/p&gt;
+&lt;h4 id=&#34;安全证明的局限性&#34;&gt;安全证明的局限性
+&lt;/h4&gt;&lt;p&gt;不要过度夸大安全证明的范围. 具体来说: 没有任何证明能排除存在一种 &amp;ldquo;比已知攻击快得多&amp;rdquo; 的攻击方法, 能够通过攻破 OW-CPA 来攻破 IND-CCA2.&lt;/p&gt;
+&lt;p&gt;我们对 OW-CPA 安全性的信心, 不是来自数学证明, 而是来自系统在长期、广泛的密码分析中存活下来这一事实.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心:&lt;/strong&gt; 安全性归根结底是经验性的, 不是纯数学的. McEliece 的安全性建立在 40 多年的攻击尝试之上, 而不是某个绝对的安全证明.&lt;/p&gt;
+&lt;h3 id=&#34;正确性&#34;&gt;正确性
+&lt;/h3&gt;&lt;p&gt;Classic McEliece KEM 是正确的. 这意味着: 对于 KeyGen 生成的每一个密钥对, 以及对于 Encap 产生的每一个密文和会话密钥, Decap 将会产生与 Encap 相同的会话密钥.&lt;/p&gt;
+&lt;p&gt;正确性通常被描述为一个功能性问题. 遇到解密失败的应用程序需要请求重传数据, 因此应用程序必须提供双向通信信道, 而且如果失败频繁发生, 可能会导致有问题的性能下降. 更微妙的是, 正确性也是一个安全性问题, 这也是为什么正确性在本文件中被涵盖的原因. 例如文献 [42] 中展示了一个利用基于格密码系统中偶发的解密失败进行攻击的案例. (解密失败不是无害的&amp;quot;bug&amp;quot;, 它可能成为攻击者的侧信道. 正确性直接关系到安全性.)&lt;/p&gt;
+&lt;h3 id=&#34;ow-cpa-security-of-the-original-mceliece-cryptosystem&#34;&gt;OW-CPA security of the original McEliece cryptosystem
+&lt;/h3&gt;&lt;h4 id=&#34;攻击类型&#34;&gt;攻击类型
+&lt;/h4&gt;&lt;p&gt;假设: 对于均匀随机矩阵 $G$, 从 $(G, Ga+e)$ 恢复 $a$ 是困难的.&lt;/p&gt;
+&lt;p&gt;那么如果一个攻击能攻破 McEliece 的 OW-CPA (即从 McEliece 公钥恢复 $a$), 那么这个攻击自然也能区分 McEliece 公钥和均匀随机矩阵.
+&lt;strong&gt;为什么?&lt;/strong&gt; 因为如果攻击者在 McEliece 公钥上能成功恢复 $a$, 但在随机矩阵上不能 (根据假设), 那么攻击者就能通过&amp;quot;是否能恢复 $a$&amp;quot; 来区分两者.&lt;/p&gt;
+&lt;p&gt;这不是双向的: 可能存在区分器, 但 OW-CPA 仍然是安全的 (即能区分公钥和随机矩阵, 但无法恢复 $a$).&lt;br&gt;
+所以区分器存在 $\ne$ OW-CPA 被攻破.&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;能否区分 $G$ 与随机矩阵&amp;quot;是判断一个攻击是否&amp;quot;利用结构&amp;quot;的最低标准.&lt;br&gt;
+能区分 $\Rightarrow$ 至少用了结构信息 $\Rightarrow$ 属于结构性攻击范畴.&lt;br&gt;
+不能区分 $\Rightarrow$ 所有攻击都是通用的 $\Rightarrow$ 安全性可归约到随机矩阵问题.&lt;/p&gt;
+&lt;p&gt;如果没有人能区分 McEliece 公钥和随机矩阵, 那么任何针对 McEliece 的 OW-CPA 攻击, 本质上也就是针对随机矩阵的 OW-CPA 攻击.
+因此, McEliece 的 OW-CPA 安全性不会比&amp;quot;随机矩阵的 OW-CPA 困难性&amp;quot;更差.&lt;/p&gt;
+&lt;p&gt;McEliece 的矩阵 $G$ 在攻击者眼中表现得像均匀随机矩阵. 如果这是真的 (没有区分器), 那么攻击 McEliece 的最好方法就是攻击一个随机矩阵.
+而攻击随机矩阵 (即一般线性码译码问题) 已经被研究了 40 多年, 进展极其缓慢.
+因此, McEliece 的 OW-CPA 安全性有坚实的经验基础.&lt;/p&gt;
+&lt;h2 id=&#34;参考文献&#34;&gt;参考文献
+&lt;/h2&gt;&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;Classic McEliece &lt;a class=&#34;link&#34; href=&#34;https://classic.mceliece.org/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://classic.mceliece.org/&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

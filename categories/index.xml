@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Categories on soda</title>
+        <link>https://sodalias.github.io/categories/</link>
+        <description>Recent content in Categories on soda</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>soda</copyright>
+        <lastBuildDate>Fri, 10 Apr 2026 00:18:23 +0800</lastBuildDate><atom:link href="https://sodalias.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>笔记</title>
+        <link>https://sodalias.github.io/categories/notes/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://sodalias.github.io/categories/notes/</guid>
+        <description>&lt;img src="https://sodalias.github.io/categories/notes/category-notes.jpg" alt="Featured image of post 笔记" /&gt;</description>
+        </item>
+        <item>
+        <title>日常</title>
+        <link>https://sodalias.github.io/categories/life/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://sodalias.github.io/categories/life/</guid>
+        <description>&lt;img src="https://sodalias.github.io/categories/life/category-life.jpg" alt="Featured image of post 日常" /&gt;</description>
+        </item>
+        <item>
+        <title>数学</title>
+        <link>https://sodalias.github.io/categories/mathematics/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://sodalias.github.io/categories/mathematics/</guid>
+        <description>&lt;img src="https://sodalias.github.io/categories/mathematics/category-mathematics.jpg" alt="Featured image of post 数学" /&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
